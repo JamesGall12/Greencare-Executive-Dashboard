@@ -231,8 +231,6 @@ grid-template-columns: 1fr;
 <button class="tab-button active" onclick="showTab('overview')">Executive Overview</button>
 <button class="tab-button" onclick="showTab('practitioners')">Practitioner Analysis</button>
 <button class="tab-button" onclick="showTab('discharges')">Patient Retention & Discharges</button>
-<button class="tab-button" onclick="showTab('sales')">Sales Performance</button>
-<button class="tab-button" onclick="showTab('insights')">Strategic Insights</button>
 </div>
 
 <!-- Executive Overview Tab -->
@@ -274,7 +272,7 @@ grid-template-columns: 1fr;
 <!-- Practitioner Analysis Tab -->
 <div id="practitioners" class="tab-content">
 <div class="card">
-<h3 style="margin-bottom: 25px; color: #064e3b;">Top Performing Practitioners</h3>
+<h3 style="margin-bottom: 25px; color: #064e3b;">Complete Practitioner Performance Analysis</h3>
 
 <div class="metrics-grid">
 <div class="metric-card green">
@@ -294,52 +292,173 @@ grid-template-columns: 1fr;
 </div>
 </div>
 
-<table class="table">
+<div style="overflow-x: auto;">
+<table class="table" id="practitionerTable">
 <thead>
 <tr>
-<th>Practitioner</th>
-<th>Total Appointments</th>
-<th>Completion Rate</th>
-<th>Online Bookings</th>
-<th>Sales Team</th>
-<th>Performance</th>
+<th onclick="sortTable(0)" style="cursor: pointer;">Practitioner ↕</th>
+<th onclick="sortTable(1)" style="cursor: pointer;">Total Appointments ↕</th>
+<th onclick="sortTable(2)" style="cursor: pointer;">Completion Rate ↕</th>
+<th onclick="sortTable(3)" style="cursor: pointer;">Initial Consults ↕</th>
+<th onclick="sortTable(4)" style="cursor: pointer;">Follow-ups ↕</th>
+<th onclick="sortTable(5)" style="cursor: pointer;">Same Practitioner Follow-ups ↕</th>
+<th onclick="sortTable(6)" style="cursor: pointer;">Cross-Referral Follow-ups ↕</th>
+<th onclick="sortTable(7)" style="cursor: pointer;">Online Bookings ↕</th>
+<th onclick="sortTable(8)" style="cursor: pointer;">Sales Team ↕</th>
+<th onclick="sortTable(9)" style="cursor: pointer;">Performance ↕</th>
 </tr>
 </thead>
 <tbody>
 <tr class="performer-excellent">
 <td><strong>Dr Sandhya Bibin</strong></td>
-<td>432</td>
-<td style="color: #059669; font-weight: bold;">97.0%</td>
-<td>128 (29.6%)</td>
-<td>304 (70.4%)</td>
-<td style="color: #059669;">Excellent</td>
+<td data-value="432">432</td>
+<td data-value="97.0" style="color: #059669; font-weight: bold;">97.0%</td>
+<td data-value="70">70 (16.2%)</td>
+<td data-value="358">358 (82.9%)</td>
+<td data-value="312" style="color: #059669; font-weight: bold;">312 (87.2%)</td>
+<td data-value="46">46 (12.8%)</td>
+<td data-value="128">128 (29.6%)</td>
+<td data-value="304">304 (70.4%)</td>
+<td data-value="5" style="color: #059669;">Excellent</td>
 </tr>
 <tr class="performer-excellent">
 <td><strong>Dr Julius Ajayi</strong></td>
-<td>154</td>
-<td style="color: #059669; font-weight: bold;">96.8%</td>
-<td>20 (13.0%)</td>
-<td>134 (87.0%)</td>
-<td style="color: #059669;">Excellent</td>
+<td data-value="154">154</td>
+<td data-value="96.8" style="color: #059669; font-weight: bold;">96.8%</td>
+<td data-value="45">45 (29.2%)</td>
+<td data-value="108">108 (70.1%)</td>
+<td data-value="89" style="color: #059669; font-weight: bold;">89 (82.4%)</td>
+<td data-value="19">19 (17.6%)</td>
+<td data-value="20">20 (13.0%)</td>
+<td data-value="134">134 (87.0%)</td>
+<td data-value="5" style="color: #059669;">Excellent</td>
 </tr>
 <tr class="performer-good">
 <td><strong>Dr Kushal Porwal</strong></td>
-<td>126</td>
-<td style="color: #eab308; font-weight: bold;">84.1%</td>
-<td>52 (41.3%)</td>
-<td>74 (58.7%)</td>
-<td style="color: #eab308;">Good</td>
+<td data-value="126">126</td>
+<td data-value="84.1" style="color: #eab308; font-weight: bold;">84.1%</td>
+<td data-value="42">42 (33.3%)</td>
+<td data-value="84">84 (66.7%)</td>
+<td data-value="63" style="color: #eab308; font-weight: bold;">63 (75.0%)</td>
+<td data-value="21">21 (25.0%)</td>
+<td data-value="52">52 (41.3%)</td>
+<td data-value="74">74 (58.7%)</td>
+<td data-value="3" style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-excellent">
+<td><strong>Dr Aarons Gauntlet Rogers</strong></td>
+<td data-value="79">79</td>
+<td data-value="91.1" style="color: #059669; font-weight: bold;">91.1%</td>
+<td data-value="21">21 (26.6%)</td>
+<td data-value="57">57 (72.2%)</td>
+<td data-value="48" style="color: #059669; font-weight: bold;">48 (84.2%)</td>
+<td data-value="9">9 (15.8%)</td>
+<td data-value="22">22 (27.8%)</td>
+<td data-value="57">57 (72.2%)</td>
+<td data-value="5" style="color: #059669;">Excellent</td>
 </tr>
 <tr class="performer-excellent">
 <td><strong>Dr Emma Lane</strong></td>
-<td>64</td>
-<td style="color: #059669; font-weight: bold;">98.4%</td>
-<td>24 (37.5%)</td>
-<td>40 (62.5%)</td>
-<td style="color: #059669;">Excellent</td>
+<td data-value="64">64</td>
+<td data-value="98.4" style="color: #059669; font-weight: bold;">98.4%</td>
+<td data-value="7">7 (10.9%)</td>
+<td data-value="57">57 (89.1%)</td>
+<td data-value="54" style="color: #059669; font-weight: bold;">54 (94.7%)</td>
+<td data-value="3">3 (5.3%)</td>
+<td data-value="24">24 (37.5%)</td>
+<td data-value="40">40 (62.5%)</td>
+<td data-value="5" style="color: #059669;">Excellent</td>
+</tr>
+<tr class="performer-good">
+<td><strong>Dr Kirrilly Manering</strong></td>
+<td data-value="61">61</td>
+<td data-value="87.0" style="color: #eab308; font-weight: bold;">87.0%</td>
+<td data-value="4">4 (6.6%)</td>
+<td data-value="47">47 (77.0%)</td>
+<td data-value="38" style="color: #eab308; font-weight: bold;">38 (80.9%)</td>
+<td data-value="9">9 (19.1%)</td>
+<td data-value="6">6 (9.8%)</td>
+<td data-value="47">47 (77.0%)</td>
+<td data-value="3" style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-good">
+<td><strong>Dr Luke</strong></td>
+<td data-value="52">52</td>
+<td data-value="86.5" style="color: #eab308; font-weight: bold;">86.5%</td>
+<td data-value="12">12 (23.1%)</td>
+<td data-value="37">37 (71.2%)</td>
+<td data-value="29" style="color: #eab308; font-weight: bold;">29 (78.4%)</td>
+<td data-value="8">8 (21.6%)</td>
+<td data-value="8">8 (15.4%)</td>
+<td data-value="41">41 (78.8%)</td>
+<td data-value="3" style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-good">
+<td><strong>Dr Dia Chouhan</strong></td>
+<td data-value="49">49</td>
+<td data-value="87.8" style="color: #eab308; font-weight: bold;">87.8%</td>
+<td data-value="11">11 (22.4%)</td>
+<td data-value="36">36 (73.5%)</td>
+<td data-value="28" style="color: #eab308; font-weight: bold;">28 (77.8%)</td>
+<td data-value="8">8 (22.2%)</td>
+<td data-value="12">12 (24.5%)</td>
+<td data-value="35">35 (71.4%)</td>
+<td data-value="3" style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-good">
+<td><strong>Dr Ronnie Varkey</strong></td>
+<td data-value="30">30</td>
+<td data-value="86.7" style="color: #eab308; font-weight: bold;">86.7%</td>
+<td data-value="8">8 (26.7%)</td>
+<td data-value="20">20 (66.7%)</td>
+<td data-value="16" style="color: #eab308; font-weight: bold;">16 (80.0%)</td>
+<td data-value="4">4 (20.0%)</td>
+<td data-value="7">7 (23.3%)</td>
+<td data-value="21">21 (70.0%)</td>
+<td data-value="3" style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-average">
+<td><strong>Dr Julia</strong></td>
+<td data-value="4">4</td>
+<td data-value="50.0" style="color: #dc2626; font-weight: bold;">50.0%</td>
+<td data-value="2">2 (50.0%)</td>
+<td data-value="2">2 (50.0%)</td>
+<td data-value="1" style="color: #dc2626;">1 (50.0%)</td>
+<td data-value="1">1 (50.0%)</td>
+<td data-value="1">1 (25.0%)</td>
+<td data-value="3">3 (75.0%)</td>
+<td data-value="1" style="color: #dc2626;">Needs Review</td>
+</tr>
+<tr class="performer-average">
+<td><strong>Dr Jeremy</strong></td>
+<td data-value="4">4</td>
+<td data-value="50.0" style="color: #dc2626; font-weight: bold;">50.0%</td>
+<td data-value="1">1 (25.0%)</td>
+<td data-value="3">3 (75.0%)</td>
+<td data-value="2" style="color: #dc2626;">2 (66.7%)</td>
+<td data-value="1">1 (33.3%)</td>
+<td data-value="0">0 (0.0%)</td>
+<td data-value="4">4 (100.0%)</td>
+<td data-value="1" style="color: #dc2626;">Needs Review</td>
 </tr>
 </tbody>
 </table>
+</div>
+
+<div class="insight-card">
+<div class="insight-title">📊 Patient Continuity & Practitioner Loyalty Analysis</div>
+<div class="insight-text">
+<strong>Highest Patient Loyalty (Same Practitioner Follow-ups):</strong><br>
+• <strong>Dr Emma Lane:</strong> 94.7% of follow-ups are returning patients (54 of 57)<br>
+• <strong>Dr Sandhya Bibin:</strong> 87.2% patient loyalty (312 of 358 follow-ups)<br>
+• <strong>Dr Aarons Gauntlet Rogers:</strong> 84.2% patient loyalty (48 of 57 follow-ups)<br><br>
+<strong>Cross-Referral Analysis:</strong><br>
+• <strong>Dr Kushal Porwal:</strong> 25.0% of follow-ups are cross-referrals (21 patients)<br>
+• <strong>Dr Dia Chouhan:</strong> 22.2% cross-referral rate (8 patients)<br>
+• <strong>Dr Luke:</strong> 21.6% cross-referral rate (8 patients)<br><br>
+<strong>Key Insight:</strong> Dr Emma Lane shows exceptional patient loyalty with 94.7% of her follow-ups being patients returning specifically to her, indicating strong patient-practitioner relationships and satisfaction.
+</div>
+</div>
 </div>
 </div>
 
@@ -602,6 +721,58 @@ document.getElementById(tabName).classList.add('active');
 
 // Add active class to clicked button
 event.target.classList.add('active');
+}
+
+function sortTable(columnIndex) {
+const table = document.getElementById('practitionerTable');
+const tbody = table.querySelector('tbody');
+const rows = Array.from(tbody.querySelectorAll('tr'));
+
+// Determine sort direction
+const isAscending = table.getAttribute('data-sort-direction') !== 'asc';
+table.setAttribute('data-sort-direction', isAscending ? 'asc' : 'desc');
+
+// Sort rows
+rows.sort((a, b) => {
+const cellA = a.cells[columnIndex];
+const cellB = b.cells[columnIndex];
+
+let valueA, valueB;
+
+// Check if cell has data-value attribute for numerical sorting
+if (cellA.hasAttribute('data-value')) {
+valueA = parseFloat(cellA.getAttribute('data-value'));
+valueB = parseFloat(cellB.getAttribute('data-value'));
+} else {
+// Text sorting
+valueA = cellA.textContent.trim().toLowerCase();
+valueB = cellB.textContent.trim().toLowerCase();
+}
+
+if (typeof valueA === 'number' && typeof valueB === 'number') {
+return isAscending ? valueA - valueB : valueB - valueA;
+} else {
+if (valueA < valueB) return isAscending ? -1 : 1;
+if (valueA > valueB) return isAscending ? 1 : -1;
+return 0;
+}
+});
+
+// Clear and repopulate tbody
+tbody.innerHTML = '';
+rows.forEach(row => tbody.appendChild(row));
+
+// Update header indicators
+const headers = table.querySelectorAll('th');
+headers.forEach((header, index) => {
+if (index === columnIndex) {
+const text = header.textContent.replace(' ↕', '').replace(' ↑', '').replace(' ↓', '');
+header.textContent = text + (isAscending ? ' ↑' : ' ↓');
+} else {
+const text = header.textContent.replace(' ↕', '').replace(' ↑', '').replace(' ↓', '');
+header.textContent = text + ' ↕';
+}
+});
 }
 </script>
 </body>
