@@ -299,12 +299,48 @@ grid-template-columns: 1fr;
 <th onclick="sortTable(0)" style="cursor: pointer;">Practitioner ↕</th>
 <th onclick="sortTable(1)" style="cursor: pointer;">Total Appointments ↕</th>
 <th onclick="sortTable(2)" style="cursor: pointer;">Completion Rate ↕</th>
-<th onclick="sortTable(3)" style="cursor: pointer;">Initial Consults ↕</th>
-<th onclick="sortTable(4)" style="cursor: pointer;">Follow-ups ↕</th>
-<th onclick="sortTable(5)" style="cursor: pointer;">Same Practitioner Follow-ups ↕</th>
-<th onclick="sortTable(6)" style="cursor: pointer;">Cross-Referral Follow-ups ↕</th>
-<th onclick="sortTable(7)" style="cursor: pointer;">Online Bookings ↕</th>
-<th onclick="sortTable(8)" style="cursor: pointer;">Sales Team ↕</th>
+<th style="cursor: pointer;">
+Initial Consults ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(3, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(3, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Follow-ups ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(4, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(4, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Same Practitioner Follow-ups ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(5, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(5, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Cross-Referral Follow-ups ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(6, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(6, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Online Bookings ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(7, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(7, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Sales Team ↕
+<div style="margin-top: 5px;">
+<button onclick="sortTableBy(8, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortTableBy(8, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
 <th onclick="sortTable(9)" style="cursor: pointer;">Performance ↕</th>
 </tr>
 </thead>
@@ -744,9 +780,22 @@ if (cellA.hasAttribute('data-value')) {
 valueA = parseFloat(cellA.getAttribute('data-value'));
 valueB = parseFloat(cellB.getAttribute('data-value'));
 } else {
+// Get cell text content
+const textA = cellA.textContent.trim();
+const textB = cellB.textContent.trim();
+
+// Extract first number for numerical sorting
+const numMatchA = textA.match(/\d+/);
+const numMatchB = textB.match(/\d+/);
+
+if (numMatchA && numMatchB) {
+valueA = parseFloat(numMatchA[0]);
+valueB = parseFloat(numMatchB[0]);
+} else {
 // Text sorting
-valueA = cellA.textContent.trim().toLowerCase();
-valueB = cellB.textContent.trim().toLowerCase();
+valueA = textA.toLowerCase();
+valueB = textB.toLowerCase();
+}
 }
 
 if (typeof valueA === 'number' && typeof valueB === 'number') {
@@ -772,6 +821,78 @@ header.textContent = text + (isAscending ? ' ↑' : ' ↓');
 const text = header.textContent.replace(' ↕', '').replace(' ↑', '').replace(' ↓', '');
 header.textContent = text + ' ↕';
 }
+});
+}
+
+function sortTableBy(columnIndex, sortType) {
+const table = document.getElementById('practitionerTable');
+const tbody = table.querySelector('tbody');
+const rows = Array.from(tbody.querySelectorAll('tr'));
+
+// Determine sort direction
+const currentDirection = table.getAttribute(`data-sort-direction-${columnIndex}-${sortType}`) || 'desc';
+const isAscending = currentDirection !== 'asc';
+table.setAttribute(`data-sort-direction-${columnIndex}-${sortType}`, isAscending ? 'asc' : 'desc');
+
+// Sort rows
+rows.sort((a, b) => {
+const cellA = a.cells[columnIndex];
+const cellB = b.cells[columnIndex];
+
+let valueA, valueB;
+
+const textA = cellA.textContent.trim();
+const textB = cellB.textContent.trim();
+
+if (sortType === 'percent') {
+// Extract percentage values from parentheses: "312 (87.2%)"
+const percentMatchA = textA.match(/\((\d+\.?\d*)%\)/);
+const percentMatchB = textB.match(/\((\d+\.?\d*)%\)/);
+
+if (percentMatchA && percentMatchB) {
+valueA = parseFloat(percentMatchA[1]);
+valueB = parseFloat(percentMatchB[1]);
+} else {
+// Fallback to first number if no percentage found
+const numMatchA = textA.match(/\d+/);
+const numMatchB = textB.match(/\d+/);
+valueA = numMatchA ? parseFloat(numMatchA[0]) : 0;
+valueB = numMatchB ? parseFloat(numMatchB[0]) : 0;
+}
+} else {
+// Sort by number - extract the first number before parentheses
+const numMatchA = textA.match(/^(\d+)/);
+const numMatchB = textB.match(/^(\d+)/);
+
+if (numMatchA && numMatchB) {
+valueA = parseFloat(numMatchA[1]);
+valueB = parseFloat(numMatchB[1]);
+} else {
+valueA = 0;
+valueB = 0;
+}
+}
+
+return isAscending ? valueA - valueB : valueB - valueA;
+});
+
+// Clear and repopulate tbody
+tbody.innerHTML = '';
+rows.forEach(row => tbody.appendChild(row));
+
+// Update button indicators
+const buttons = table.querySelectorAll(`th button`);
+buttons.forEach(button => {
+button.style.background = '#e5e7eb';
+button.style.color = '#374151';
+});
+
+// Highlight active button
+const targetButtons = table.querySelectorAll(`th button[onclick="sortTableBy(${columnIndex}, '${sortType}')"]`);
+targetButtons.forEach(button => {
+button.style.background = '#059669';
+button.style.color = 'white';
+button.textContent = button.textContent.replace(' ↑', '').replace(' ↓', '') + (isAscending ? ' ↑' : ' ↓');
 });
 }
 </script>
