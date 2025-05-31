@@ -1,909 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greencare Executive Clinic Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #059669 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 25px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        }
-        
-        .title {
-            font-size: 3rem;
-            color: #064e3b;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .subtitle {
-            color: #6b7280;
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-        }
-        
-        .performance-summary {
-            display: inline-flex;
-            align-items: center;
-            gap: 20px;
-            background: #ecfdf5;
-            border: 2px solid #059669;
-            border-radius: 15px;
-            padding: 20px 30px;
-            color: #064e3b;
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .nav {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
-        }
-        
-        .tab-button {
-            background: #f3f4f6;
-            border: none;
-            padding: 15px 35px;
-            margin: 0 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-        
-        .tab-button:hover {
-            background: #e5e7eb;
-            transform: translateY(-3px);
-        }
-        
-        .tab-button.active {
-            background: #059669;
-            color: white;
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
-        }
-        
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
-        }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 35px;
-        }
-        
-        .metric-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            border-left: 6px solid transparent;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-8px);
-        }
-        
-        .metric-card.green { border-left-color: #059669; }
-        .metric-card.blue { border-left-color: #0284c7; }
-        .metric-card.purple { border-left-color: #7c3aed; }
-        .metric-card.orange { border-left-color: #ea580c; }
-        
-        .metric-title {
-            font-size: 1rem;
-            color: #6b7280;
-            margin-bottom: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .metric-value {
-            font-size: 3.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        
-        .metric-subtitle {
-            font-size: 1rem;
-            color: #9ca3af;
-            font-weight: 500;
-        }
-        
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 25px;
-        }
-        
-        .three-column {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .table th,
-        .table td {
-            text-align: left;
-            padding: 15px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .table th {
-            background: #f8fafc;
-            font-weight: 600;
-            color: #374151;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-        
-        .table tr:hover {
-            background: #f9fafb;
-        }
-        
-        .performer-excellent { background: #ecfdf5; }
-        .performer-good { background: #fef3c7; }
-        .performer-average { background: #fef2f2; }
-        
-        .status-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        
-        .dot-excellent { background: #059669; }
-        .dot-good { background: #eab308; }
-        .dot-average { background: #dc2626; }
-        
-        .progress-bar {
-            background: #e5e7eb;
-            border-radius: 10px;
-            height: 10px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 1s ease;
-        }
-        
-        .progress-excellent { background: linear-gradient(90deg, #059669, #10b981); }
-        .progress-good { background: linear-gradient(90deg, #eab308, #fbbf24); }
-        .progress-average { background: linear-gradient(90deg, #dc2626, #ef4444); }
-        
-        .insight-card {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border-radius: 15px;
-            padding: 25px;
-            border-left: 5px solid #059669;
-            margin: 20px 0;
-        }
-        
-        .insight-title {
-            font-weight: 600;
-            color: #064e3b;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-        
-        .insight-text {
-            color: #047857;
-            line-height: 1.6;
-            font-size: 1rem;
-        }
-        
-        .ranking-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 12px;
-            border-left: 5px solid transparent;
-            transition: transform 0.2s ease;
-        }
-        
-        .ranking-item:hover {
-            transform: translateX(8px);
-        }
-        
-        .rank-1 { background: #fef3c7; border-left-color: #eab308; }
-        .rank-2 { background: #f3f4f6; border-left-color: #9ca3af; }
-        .rank-3 { background: #fdf2f8; border-left-color: #ec4899; }
-        .rank-other { background: #f8fafc; border-left-color: #6b7280; }
-        
-        .rank-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-            width: 50px;
-            text-align: center;
-        }
-        
-        .practitioner-info {
-            flex: 1;
-            margin-left: 20px;
-        }
-        
-        .practitioner-name {
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .practitioner-stats {
-            font-size: 1rem;
-            color: #6b7280;
-            line-height: 1.4;
-        }
-        
-        .achievement-badge {
-            background: #059669;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .badge-excellent { background: #059669; }
-        .badge-good { background: #eab308; }
-        .badge-average { background: #dc2626; }
-        
-        .stat-box {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-top: 4px solid;
-        }
-        
-        .stat-box.online { border-top-color: #0284c7; }
-        .stat-box.sales { border-top-color: #059669; }
-        .stat-box.completion { border-top-color: #7c3aed; }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #6b7280;
-            font-weight: 500;
-        }
-        
-        .source-breakdown {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        
-        .source-breakdown:last-child {
-            border-bottom: none;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @media (max-width: 768px) {
-            .two-column, .three-column {
-                grid-template-columns: 1fr;
-            }
-            
-            .title {
-                font-size: 2.5rem;
-            }
-            
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greencare Executive Clinic Dashboard</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #059669 100%);
+min-height: 100vh;
+padding: 20px;
+}
+
+.container {
+max-width: 1600px;
+margin: 0 auto;
+}
+
+.header {
+background: white;
+border-radius: 20px;
+padding: 40px;
+margin-bottom: 25px;
+text-align: center;
+box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.title {
+font-size: 3rem;
+color: #064e3b;
+margin-bottom: 10px;
+font-weight: 700;
+}
+
+.subtitle {
+color: #6b7280;
+font-size: 1.3rem;
+margin-bottom: 25px;
+}
+
+.performance-summary {
+display: inline-flex;
+align-items: center;
+gap: 20px;
+background: #ecfdf5;
+border: 2px solid #059669;
+border-radius: 15px;
+padding: 20px 30px;
+color: #064e3b;
+font-weight: 600;
+font-size: 1.2rem;
+}
+
+.nav {
+background: white;
+border-radius: 20px;
+padding: 25px;
+margin-bottom: 25px;
+text-align: center;
+box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}
+
+.tab-button {
+background: #f3f4f6;
+border: none;
+padding: 15px 35px;
+margin: 0 8px;
+border-radius: 12px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+font-size: 1.1rem;
+}
+
+.tab-button:hover {
+background: #e5e7eb;
+transform: translateY(-3px);
+}
+
+.tab-button.active {
+background: #059669;
+color: white;
+box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.card {
+background: white;
+border-radius: 20px;
+padding: 30px;
+margin-bottom: 25px;
+box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+}
+
+.metrics-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 25px;
+margin-bottom: 35px;
+}
+
+.metric-card {
+background: white;
+border-radius: 15px;
+padding: 30px;
+text-align: center;
+box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+transition: transform 0.3s ease;
+border-left: 6px solid transparent;
+}
+
+.metric-card:hover {
+transform: translateY(-8px);
+}
+
+.metric-card.green { border-left-color: #059669; }
+.metric-card.blue { border-left-color: #0284c7; }
+.metric-card.purple { border-left-color: #7c3aed; }
+.metric-card.orange { border-left-color: #ea580c; }
+.metric-card.red { border-left-color: #dc2626; }
+
+.metric-title {
+font-size: 1rem;
+color: #6b7280;
+margin-bottom: 10px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.metric-value {
+font-size: 3.2rem;
+font-weight: 700;
+margin-bottom: 8px;
+}
+
+.metric-subtitle {
+font-size: 1rem;
+color: #9ca3af;
+font-weight: 500;
+}
+
+.table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+
+.table th,
+.table td {
+text-align: left;
+padding: 15px;
+border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+background: #f8fafc;
+font-weight: 600;
+color: #374151;
+text-transform: uppercase;
+font-size: 0.85rem;
+letter-spacing: 0.5px;
+}
+
+.table tr:hover {
+background: #f9fafb;
+}
+
+.performer-excellent { background: #ecfdf5; }
+.performer-good { background: #fef3c7; }
+.performer-average { background: #fef2f2; }
+
+.tab-content {
+display: none;
+}
+
+.tab-content.active {
+display: block;
+}
+
+.insight-card {
+background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+border-radius: 15px;
+padding: 25px;
+border-left: 5px solid #059669;
+margin: 20px 0;
+}
+
+.insight-title {
+font-weight: 600;
+color: #064e3b;
+margin-bottom: 15px;
+font-size: 1.2rem;
+}
+
+.insight-text {
+color: #047857;
+line-height: 1.6;
+font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+.title {
+font-size: 2.5rem;
+}
+.metrics-grid {
+grid-template-columns: 1fr;
+}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1 class="title">Greencare Executive Clinic Dashboard</h1>
-            <p class="subtitle">Comprehensive Performance Analysis | May 2025</p>
-            <div class="performance-summary">
-                📊 1,051 Total Appointments | 92.2% Completion Rate | 71.5% Sales Team Generated
-            </div>
-        </div>
+<div class="container">
+<!-- Header -->
+<div class="header">
+<h1 class="title">Greencare Executive Clinic Dashboard</h1>
+<p class="subtitle">Comprehensive Performance Analysis | May 2025</p>
+<div class="performance-summary">
+📊 1,051 Total Appointments | 92.2% Completion Rate | 71.5% Sales Team Generated
+</div>
+</div>
 
-        <!-- Navigation -->
-        <div class="nav">
-            <button class="tab-button active" onclick="showTab('overview')">Executive Overview</button>
-            <button class="tab-button" onclick="showTab('practitioners')">Practitioner Analysis</button>
-            <button class="tab-button" onclick="showTab('sales')">Sales Performance</button>
-            <button class="tab-button" onclick="showTab('insights')">Strategic Insights</button>
-        </div>
+<!-- Navigation -->
+<div class="nav">
+<button class="tab-button active" onclick="showTab('overview')">Executive Overview</button>
+<button class="tab-button" onclick="showTab('practitioners')">Practitioner Analysis</button>
+<button class="tab-button" onclick="showTab('discharges')">Patient Retention & Discharges</button>
+<button class="tab-button" onclick="showTab('sales')">Sales Performance</button>
+<button class="tab-button" onclick="showTab('insights')">Strategic Insights</button>
+</div>
 
-        <!-- Executive Overview Tab -->
-        <div id="overview" class="tab-content active">
-            <!-- Key Metrics -->
-            <div class="metrics-grid">
-                <div class="metric-card green">
-                    <div class="metric-title">Total Appointments</div>
-                    <div class="metric-value" style="color: #059669;">1,051</div>
-                    <div class="metric-subtitle">Strong monthly volume</div>
-                </div>
-                <div class="metric-card blue">
-                    <div class="metric-title">Completion Rate</div>
-                    <div class="metric-value" style="color: #0284c7;">92.2%</div>
-                    <div class="metric-subtitle">Excellent patient attendance</div>
-                </div>
-                <div class="metric-card purple">
-                    <div class="metric-title">Online Bookings</div>
-                    <div class="metric-value" style="color: #7c3aed;">28.5%</div>
-                    <div class="metric-subtitle">300 self-service bookings</div>
-                </div>
-                <div class="metric-card orange">
-                    <div class="metric-title">Sales Team Generated</div>
-                    <div class="metric-value" style="color: #ea580c;">71.5%</div>
-                    <div class="metric-subtitle">751 sales-driven bookings</div>
-                </div>
-            </div>
+<!-- Executive Overview Tab -->
+<div id="overview" class="tab-content active">
+<!-- Key Metrics -->
+<div class="metrics-grid">
+<div class="metric-card green">
+<div class="metric-title">Total Appointments</div>
+<div class="metric-value" style="color: #059669;">1,051</div>
+<div class="metric-subtitle">Strong monthly volume</div>
+</div>
+<div class="metric-card blue">
+<div class="metric-title">Completion Rate</div>
+<div class="metric-value" style="color: #0284c7;">92.2%</div>
+<div class="metric-subtitle">Excellent patient attendance</div>
+</div>
+<div class="metric-card purple">
+<div class="metric-title">Online Bookings</div>
+<div class="metric-value" style="color: #7c3aed;">28.5%</div>
+<div class="metric-subtitle">300 self-service bookings</div>
+</div>
+<div class="metric-card orange">
+<div class="metric-title">Sales Team Generated</div>
+<div class="metric-value" style="color: #ea580c;">71.5%</div>
+<div class="metric-subtitle">751 sales-driven bookings</div>
+</div>
+</div>
 
-            <!-- Booking Source Analysis -->
-            <div class="two-column">
-                <div class="card">
-                    <h3 style="margin-bottom: 20px; color: #064e3b;">Booking Channel Performance</h3>
-                    <div class="stat-box online">
-                        <div class="stat-number" style="color: #0284c7;">300</div>
-                        <div class="stat-label">Online Bookings (28.5%)</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill progress-good" style="width: 28.5%;"></div>
-                        </div>
-                    </div>
-                    <div style="margin: 20px 0;"></div>
-                    <div class="stat-box sales">
-                        <div class="stat-number" style="color: #059669;">751</div>
-                        <div class="stat-label">Sales Team Bookings (71.5%)</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill progress-excellent" style="width: 71.5%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="insight-card">
-                        <div class="insight-title">📈 Channel Insight</div>
-                        <div class="insight-text">
-                            Sales team drives majority of bookings (71.5%), indicating strong personal relationship building. Online channel provides steady self-service volume.
-                        </div>
-                    </div>
-                </div>
+<div class="insight-card">
+<div class="insight-title">📈 Key Performance Insights</div>
+<div class="insight-text">
+<strong>Exceptional Performance:</strong> 92.2% completion rate significantly exceeds industry standards of 85%.<br><br>
+<strong>Sales Excellence:</strong> Strong sales team performance driving 71.5% of bookings demonstrates excellent relationship building.<br><br>
+<strong>Growth Opportunity:</strong> 28.5% online booking rate shows potential for digital channel expansion.
+</div>
+</div>
+</div>
 
-                <div class="card">
-                    <h3 style="margin-bottom: 20px; color: #064e3b;">Appointment Type Distribution</h3>
-                    <div class="source-breakdown">
-                        <span style="display: flex; align-items: center; gap: 10px;">
-                            <span style="width: 12px; height: 12px; background: #059669; border-radius: 50%;"></span>
-                            Follow-up Appointments
-                        </span>
-                        <strong style="color: #059669;">787 (74.9%)</strong>
-                    </div>
-                    <div class="source-breakdown">
-                        <span style="display: flex; align-items: center; gap: 10px;">
-                            <span style="width: 12px; height: 12px; background: #0284c7; border-radius: 50%;"></span>
-                            Initial Consultations
-                        </span>
-                        <strong style="color: #0284c7;">255 (24.3%)</strong>
-                    </div>
-                    <div class="source-breakdown">
-                        <span style="display: flex; align-items: center; gap: 10px;">
-                            <span style="width: 12px; height: 12px; background: #eab308; border-radius: 50%;"></span>
-                            Specialist Services
-                        </span>
-                        <strong style="color: #eab308;">9 (0.8%)</strong>
-                    </div>
-                    
-                    <div class="insight-card">
-                        <div class="insight-title">🔄 Patient Retention Insight</div>
-                        <div class="insight-text">
-                            Strong 75% follow-up rate indicates excellent patient retention and ongoing care relationships.
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Practitioner Analysis Tab -->
+<div id="practitioners" class="tab-content">
+<div class="card">
+<h3 style="margin-bottom: 25px; color: #064e3b;">Top Performing Practitioners</h3>
 
-            <!-- Patient Demographics -->
-            <div class="card">
-                <h3 style="margin-bottom: 20px; color: #064e3b;">Patient Demographics & Status Overview</h3>
-                <div class="three-column">
-                    <div class="stat-box">
-                        <div class="stat-number" style="color: #059669;">68.7%</div>
-                        <div class="stat-label">Male Patients (722)</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number" style="color: #7c3aed;">31.1%</div>
-                        <div class="stat-label">Female Patients (327)</div>
-                    </div>
-                    <div class="stat-box completion">
-                        <div class="stat-number" style="color: #0284c7;">92.2%</div>
-                        <div class="stat-label">Completion Rate</div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 25px;">
-                    <h4 style="color: #064e3b; margin-bottom: 15px;">Appointment Status Breakdown</h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <div style="text-align: center; padding: 15px; background: #ecfdf5; border-radius: 8px;">
-                            <div style="font-size: 1.8rem; font-weight: bold; color: #059669;">969</div>
-                            <div style="color: #047857;">Completed (92.2%)</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: #fef2f2; border-radius: 8px;">
-                            <div style="font-size: 1.8rem; font-weight: bold; color: #dc2626;">38</div>
-                            <div style="color: #991b1b;">DNA (3.6%)</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: #fffbeb; border-radius: 8px;">
-                            <div style="font-size: 1.8rem; font-weight: bold; color: #eab308;">32</div>
-                            <div style="color: #92400e;">At Billing (3.0%)</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: #eff6ff; border-radius: 8px;">
-                            <div style="font-size: 1.8rem; font-weight: bold; color: #0284c7;">12</div>
-                            <div style="color: #1d4ed8;">With Doctor (1.1%)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="metrics-grid">
+<div class="metric-card green">
+<div class="metric-title">Dr Sandhya Bibin</div>
+<div class="metric-value" style="color: #059669;">432</div>
+<div class="metric-subtitle">Appointments (41% of total)</div>
+</div>
+<div class="metric-card blue">
+<div class="metric-title">Dr Julius Ajayi</div>
+<div class="metric-value" style="color: #0284c7;">154</div>
+<div class="metric-subtitle">Appointments (14.7% of total)</div>
+</div>
+<div class="metric-card purple">
+<div class="metric-title">Dr Kushal Porwal</div>
+<div class="metric-value" style="color: #7c3aed;">126</div>
+<div class="metric-subtitle">Appointments (12% of total)</div>
+</div>
+</div>
 
-        <!-- Practitioner Analysis Tab -->
-        <div id="practitioners" class="tab-content">
-            <div class="card">
-                <h3 style="margin-bottom: 25px; color: #064e3b;">Top Performing Practitioners</h3>
-                
-                <!-- Top 5 Practitioners -->
-                <div class="ranking-item rank-1">
-                    <div class="rank-number" style="color: #eab308;">🥇</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Dr Sandhya Bibin</div>
-                        <div class="practitioner-stats">
-                            432 appointments (41.1% of total) | 97.0% completion rate<br>
-                            Sources: 128 Online, 304 Sales Team | Types: 358 Follow-up, 70 Initial
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">Top Volume</div>
-                </div>
+<table class="table">
+<thead>
+<tr>
+<th>Practitioner</th>
+<th>Total Appointments</th>
+<th>Completion Rate</th>
+<th>Online Bookings</th>
+<th>Sales Team</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="performer-excellent">
+<td><strong>Dr Sandhya Bibin</strong></td>
+<td>432</td>
+<td style="color: #059669; font-weight: bold;">97.0%</td>
+<td>128 (29.6%)</td>
+<td>304 (70.4%)</td>
+<td style="color: #059669;">Excellent</td>
+</tr>
+<tr class="performer-excellent">
+<td><strong>Dr Julius Ajayi</strong></td>
+<td>154</td>
+<td style="color: #059669; font-weight: bold;">96.8%</td>
+<td>20 (13.0%)</td>
+<td>134 (87.0%)</td>
+<td style="color: #059669;">Excellent</td>
+</tr>
+<tr class="performer-good">
+<td><strong>Dr Kushal Porwal</strong></td>
+<td>126</td>
+<td style="color: #eab308; font-weight: bold;">84.1%</td>
+<td>52 (41.3%)</td>
+<td>74 (58.7%)</td>
+<td style="color: #eab308;">Good</td>
+</tr>
+<tr class="performer-excellent">
+<td><strong>Dr Emma Lane</strong></td>
+<td>64</td>
+<td style="color: #059669; font-weight: bold;">98.4%</td>
+<td>24 (37.5%)</td>
+<td>40 (62.5%)</td>
+<td style="color: #059669;">Excellent</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
-                <div class="ranking-item rank-2">
-                    <div class="rank-number" style="color: #9ca3af;">🥈</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Dr Julius Ajayi</div>
-                        <div class="practitioner-stats">
-                            154 appointments (14.7% of total) | 96.8% completion rate<br>
-                            Sources: 20 Online, 134 Sales Team | Types: 108 Follow-up, 45 Initial
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">High Completion</div>
-                </div>
+<!-- Patient Retention & Discharges Tab -->
+<div id="discharges" class="tab-content">
+<div class="card">
+<h3 style="margin-bottom: 25px; color: #064e3b;">Patient Retention Analysis & Discharge Tracking</h3>
+<p style="color: #6b7280; margin-bottom: 30px;">Critical analysis of patient discharges by practitioner with discharge rates as percentage of total appointments</p>
 
-                <div class="ranking-item rank-3">
-                    <div class="rank-number" style="color: #ec4899;">🥉</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Dr Kushal Porwal</div>
-                        <div class="practitioner-stats">
-                            126 appointments (12.0% of total) | 84.1% completion rate<br>
-                            Sources: 52 Online, 74 Sales Team | Types: 84 Follow-up, 42 Initial
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-good">Strong Volume</div>
-                </div>
+<!-- Discharge Summary Stats -->
+<div class="metrics-grid">
+<div class="metric-card red">
+<div class="metric-title">Total Patient Discharges</div>
+<div class="metric-value" style="color: #dc2626;">68</div>
+<div class="metric-subtitle">6.5% of all appointments</div>
+</div>
+<div class="metric-card orange">
+<div class="metric-title">Patient-Initiated</div>
+<div class="metric-value" style="color: #ea580c;">66.2%</div>
+<div class="metric-subtitle">45 patient-requested discharges</div>
+</div>
+<div class="metric-card purple">
+<div class="metric-title">Practitioner-Initiated</div>
+<div class="metric-value" style="color: #7c3aed;">33.8%</div>
+<div class="metric-subtitle">23 practitioner-requested discharges</div>
+</div>
+</div>
 
-                <div class="ranking-item rank-other">
-                    <div class="rank-number" style="color: #6b7280;">4</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Dr Aarons Gauntlet Rogers</div>
-                        <div class="practitioner-stats">
-                            79 appointments (7.5% of total) | 91.1% completion rate<br>
-                            Sources: 22 Online, 57 Sales Team | Types: 57 Follow-up, 21 Initial
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-good">Balanced Mix</div>
-                </div>
+<!-- Detailed Discharge Analysis Table with Percentages -->
+<div class="card">
+<h3 style="margin-bottom: 20px; color: #064e3b;">Detailed Discharge Analysis by Practitioner</h3>
+<table class="table">
+<thead>
+<tr>
+<th>Risk Level</th>
+<th>Practitioner</th>
+<th>Total Appointments</th>
+<th>Total Discharges</th>
+<th>Patient-Initiated</th>
+<th>Practitioner-Initiated</th>
+<th>Patient Request % of Appointments</th>
+<th>Practitioner Request % of Appointments</th>
+<th>Total Discharge % of Appointments</th>
+<th>Retention Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #fef2f2;">
+<td><span style="font-size: 1.2rem;">🔴</span> <strong style="color: #dc2626;">HIGH RISK</strong></td>
+<td><strong>Dr Sandhya Bibin</strong></td>
+<td><strong>432</strong></td>
+<td style="color: #dc2626; font-weight: bold; font-size: 1.1rem;">31</td>
+<td style="color: #ea580c; font-weight: bold;">17</td>
+<td style="color: #7c3aed; font-weight: bold;">14</td>
+<td style="color: #dc2626; font-weight: bold;">3.9%</td>
+<td style="color: #dc2626; font-weight: bold;">3.2%</td>
+<td style="color: #dc2626; font-weight: bold;">7.2%</td>
+<td style="color: #dc2626; font-weight: bold;">IMMEDIATE ACTION</td>
+</tr>
+<tr style="background: #fff7ed;">
+<td><span style="font-size: 1.2rem;">🟠</span> <strong style="color: #ea580c;">HIGH RISK</strong></td>
+<td><strong>Dr Kushal Porwal</strong></td>
+<td><strong>126</strong></td>
+<td style="color: #ea580c; font-weight: bold; font-size: 1.1rem;">12</td>
+<td style="color: #ea580c; font-weight: bold;">7</td>
+<td style="color: #7c3aed; font-weight: bold;">5</td>
+<td style="color: #ea580c; font-weight: bold;">5.6%</td>
+<td style="color: #ea580c; font-weight: bold;">4.0%</td>
+<td style="color: #ea580c; font-weight: bold;">9.5%</td>
+<td style="color: #ea580c; font-weight: bold;">URGENT REVIEW</td>
+</tr>
+<tr style="background: #fffbeb;">
+<td><span style="font-size: 1.2rem;">🟡</span> <strong style="color: #f59e0b;">MEDIUM</strong></td>
+<td><strong>Dr Julius Ajayi</strong></td>
+<td><strong>154</strong></td>
+<td style="color: #f59e0b; font-weight: bold;">6</td>
+<td>5</td>
+<td>1</td>
+<td style="color: #f59e0b; font-weight: bold;">3.2%</td>
+<td style="color: #f59e0b; font-weight: bold;">0.6%</td>
+<td style="color: #f59e0b; font-weight: bold;">3.9%</td>
+<td style="color: #f59e0b; font-weight: bold;">MONITOR CLOSELY</td>
+</tr>
+<tr class="performer-good">
+<td><span style="font-size: 1.2rem;">🟡</span> LOW</td>
+<td><strong>Dr Julia</strong></td>
+<td><strong>4</strong></td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>100.0%</td>
+<td>0.0%</td>
+<td>100.0%</td>
+<td>MONITOR</td>
+</tr>
+<tr class="performer-good">
+<td><span style="font-size: 1.2rem;">🟡</span> LOW</td>
+<td><strong>Dr Jeremy</strong></td>
+<td><strong>4</strong></td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>100.0%</td>
+<td>0.0%</td>
+<td>100.0%</td>
+<td>MONITOR</td>
+</tr>
+<tr class="performer-excellent">
+<td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
+<td><strong>Dr Aarons Gauntlet Rogers</strong></td>
+<td><strong>79</strong></td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2.5%</td>
+<td>1.3%</td>
+<td>3.8%</td>
+<td>ACCEPTABLE</td>
+</tr>
+<tr class="performer-excellent">
+<td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
+<td><strong>Dr Luke</strong></td>
+<td><strong>3</strong></td>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+<td>100.0%</td>
+<td>0.0%</td>
+<td>100.0%</td>
+<td>ACCEPTABLE</td>
+</tr>
+<tr class="performer-excellent">
+<td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
+<td><strong>Dr Emma Lane</strong></td>
+<td><strong>64</strong></td>
+<td style="color: #059669; font-weight: bold;">0</td>
+<td>0</td>
+<td>0</td>
+<td style="color: #059669; font-weight: bold;">0.0%</td>
+<td style="color: #059669; font-weight: bold;">0.0%</td>
+<td style="color: #059669; font-weight: bold;">0.0%</td>
+<td style="color: #059669; font-weight: bold;">EXCELLENT</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-                <div class="ranking-item rank-other">
-                    <div class="rank-number" style="color: #6b7280;">5</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Dr Emma Lane</div>
-                        <div class="practitioner-stats">
-                            64 appointments (6.1% of total) | 98.4% completion rate<br>
-                            Sources: 24 Online, 40 Sales Team | Types: 57 Follow-up, 7 Initial
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">Highest Completion</div>
-                </div>
-            </div>
+<div class="insight-card">
+<div class="insight-title">🚨 Critical Discharge Analysis</div>
+<div class="insight-text">
+<strong>High-Risk Practitioners:</strong><br>
+• <strong>Dr Kushal Porwal:</strong> 9.5% total discharge rate (5.6% patient-initiated + 4.0% practitioner-initiated)<br>
+• <strong>Dr Sandhya Bibin:</strong> 7.2% total discharge rate (3.9% patient-initiated + 3.2% practitioner-initiated)<br><br>
+<strong>Best Practice Model:</strong><br>
+• <strong>Dr Emma Lane:</strong> 0.0% discharge rate with 98.4% completion - study and replicate her patient engagement methods<br><br>
+<strong>Immediate Actions Required:</strong><br>
+• Review Dr Kushal Porwal's patient communication and digital onboarding process<br>
+• Analyze Dr Sandhya Bibin's workload vs quality correlation (432 appointments may be overwhelming)<br>
+• Implement patient retention training program based on Dr Emma Lane's success model
+</div>
+</div>
+</div>
 
-            <!-- Detailed Practitioner Performance Table -->
-            <div class="card">
-                <h3 style="margin-bottom: 20px; color: #064e3b;">Detailed Practitioner Metrics</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Performance</th>
-                            <th>Practitioner</th>
-                            <th>Total Appointments</th>
-                            <th>Online Bookings</th>
-                            <th>Sales Team</th>
-                            <th>Initial Consults</th>
-                            <th>Follow-ups</th>
-                            <th>Completion Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="performer-excellent">
-                            <td><span class="status-dot dot-excellent"></span></td>
-                            <td><strong>Dr Sandhya Bibin</strong></td>
-                            <td>432</td>
-                            <td style="color: #0284c7; font-weight: bold;">128 (29.6%)</td>
-                            <td style="color: #059669; font-weight: bold;">304 (70.4%)</td>
-                            <td>70</td>
-                            <td>358</td>
-                            <td style="color: #059669; font-weight: bold;">97.0%</td>
-                        </tr>
-                        <tr class="performer-excellent">
-                            <td><span class="status-dot dot-excellent"></span></td>
-                            <td><strong>Dr Julius Ajayi</strong></td>
-                            <td>154</td>
-                            <td style="color: #0284c7; font-weight: bold;">20 (13.0%)</td>
-                            <td style="color: #059669; font-weight: bold;">134 (87.0%)</td>
-                            <td>45</td>
-                            <td>108</td>
-                            <td style="color: #059669; font-weight: bold;">96.8%</td>
-                        </tr>
-                        <tr class="performer-good">
-                            <td><span class="status-dot dot-good"></span></td>
-                            <td><strong>Dr Kushal Porwal</strong></td>
-                            <td>126</td>
-                            <td style="color: #0284c7; font-weight: bold;">52 (41.3%)</td>
-                            <td style="color: #059669; font-weight: bold;">74 (58.7%)</td>
-                            <td>42</td>
-                            <td>84</td>
-                            <td style="color: #eab308; font-weight: bold;">84.1%</td>
-                        </tr>
-                        <tr class="performer-excellent">
-                            <td><span class="status-dot dot-excellent"></span></td>
-                            <td><strong>Dr Aarons Gauntlet Rogers</strong></td>
-                            <td>79</td>
-                            <td style="color: #0284c7; font-weight: bold;">22 (27.8%)</td>
-                            <td style="color: #059669; font-weight: bold;">57 (72.2%)</td>
-                            <td>21</td>
-                            <td>57</td>
-                            <td style="color: #059669; font-weight: bold;">91.1%</td>
-                        </tr>
-                        <tr class="performer-excellent">
-                            <td><span class="status-dot dot-excellent"></span></td>
-                            <td><strong>Dr Emma Lane</strong></td>
-                            <td>64</td>
-                            <td style="color: #0284c7; font-weight: bold;">24 (37.5%)</td>
-                            <td style="color: #059669; font-weight: bold;">40 (62.5%)</td>
-                            <td>7</td>
-                            <td>57</td>
-                            <td style="color: #059669; font-weight: bold;">98.4%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<!-- Sales Performance Tab -->
+<div id="sales" class="tab-content">
+<div class="card">
+<h3 style="margin-bottom: 25px; color: #064e3b;">Sales Team Performance Leaderboard</h3>
 
-            <!-- Practitioner Insights -->
-            <div class="insight-card">
-                <div class="insight-title">👨‍⚕️ Key Practitioner Insights</div>
-                <div class="insight-text">
-                    <strong>Volume Leaders:</strong> Dr Sandhya Bibin dominates with 41% of all appointments, showing exceptional capacity management.<br><br>
-                    <strong>Completion Excellence:</strong> Dr Emma Lane leads with 98.4% completion rate, followed closely by Dr Sandhya Bibin (97.0%).<br><br>
-                    <strong>Booking Source Balance:</strong> Most practitioners receive strong sales team support, with Dr Kushal Porwal showing highest online booking ratio (41.3%).<br><br>
-                    <strong>Patient Journey:</strong> All top performers show strong follow-up appointment ratios, indicating effective ongoing patient relationships.
-                </div>
-            </div>
-        </div>
+<div class="metrics-grid">
+<div class="metric-card green">
+<div class="metric-title">Candice Madela</div>
+<div class="metric-value" style="color: #059669;">220</div>
+<div class="metric-subtitle">Bookings | 89.1% completion</div>
+</div>
+<div class="metric-card blue">
+<div class="metric-title">Ed Regidor</div>
+<div class="metric-value" style="color: #0284c7;">161</div>
+<div class="metric-subtitle">Bookings | 95.0% completion</div>
+</div>
+<div class="metric-card purple">
+<div class="metric-title">Kurt Ramisch</div>
+<div class="metric-value" style="color: #7c3aed;">159</div>
+<div class="metric-subtitle">Bookings | 94.3% completion</div>
+</div>
+</div>
 
-        <!-- Sales Performance Tab -->
-        <div id="sales" class="tab-content">
-            <div class="card">
-                <h3 style="margin-bottom: 25px; color: #064e3b;">Sales Team Performance Leaderboard</h3>
-                
-                <!-- Sales Team Rankings -->
-                <div class="ranking-item rank-1">
-                    <div class="rank-number" style="color: #eab308;">🥇</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Candice Madela</div>
-                        <div class="practitioner-stats">
-                            220 bookings | 89.1% completion rate<br>
-                            Mix: 65 Initial, 155 Follow-up appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">Top Performer</div>
-                </div>
+<div class="insight-card">
+<div class="insight-title">🎯 Sales Team Insights</div>
+<div class="insight-text">
+<strong>Top Performers:</strong> Sales team generates 71.5% of all bookings (751 appointments) showing excellent relationship-based patient acquisition.<br><br>
+<strong>High Completion Rates:</strong> Ed Regidor leads completion at 95.0%, followed by Kurt Ramisch at 94.3%.<br><br>
+<strong>Volume Leaders:</strong> Candice Madela drives highest volume with 220 bookings, representing strong patient relationship building.
+</div>
+</div>
+</div>
 
-                <div class="ranking-item rank-2">
-                    <div class="rank-number" style="color: #9ca3af;">🥈</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Ed Regidor</div>
-                        <div class="practitioner-stats">
-                            161 bookings | 95.0% completion rate<br>
-                            Specialization: 158 Follow-up, 3 Initial appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">High Completion</div>
-                </div>
+<!-- Strategic Insights Tab -->
+<div id="insights" class="tab-content">
+<div class="insight-card">
+<div class="insight-title">🎯 Executive Summary & Strategic Recommendations</div>
+<div class="insight-text">
+<strong>Overall Performance:</strong> May 2025 shows strong clinic operations with 1,051 appointments and exceptional 92.2% completion rate, significantly above industry standards.<br><br>
+<strong>Critical Actions Required:</strong><br>
+• <strong>Discharge Rate Reduction:</strong> Focus on Dr Kushal Porwal (9.5% discharge rate) and Dr Sandhya Bibin (7.2% discharge rate)<br>
+• <strong>Best Practice Replication:</strong> Study and implement Dr Emma Lane's zero-discharge methods across all practitioners<br>
+• <strong>Digital Growth:</strong> 28.5% online booking rate shows potential for expansion<br>
+• <strong>Capacity Optimization:</strong> Consider redistributing Dr Sandhya Bibin's 41% appointment load<br><br>
+<strong>Revenue Impact:</strong> Reducing discharge rates by 50% could retain 34 additional patients, significantly improving profitability and reputation.
+</div>
+</div>
 
-                <div class="ranking-item rank-3">
-                    <div class="rank-number" style="color: #ec4899;">🥉</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Kurt Ramisch</div>
-                        <div class="practitioner-stats">
-                            159 bookings | 94.3% completion rate<br>
-                            Mix: 59 Initial, 99 Follow-up appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">Balanced Mix</div>
-                </div>
+<div class="card">
+<h3 style="margin-bottom: 20px; color: #064e3b;">30-60-90 Day Action Plan</h3>
+<div style="margin: 20px 0; padding: 25px; background: #fef3c7; border-radius: 12px; border-left: 5px solid #eab308;">
+<div style="font-weight: 600; color: #92400e; margin-bottom: 10px; font-size: 1.1rem;">30-Day Priorities</div>
+<ul style="color: #92400e; margin-left: 20px; line-height: 1.6;">
+<li>Immediate review of Dr Kushal Porwal's patient communication protocols</li>
+<li>Analyze Dr Sandhya Bibin's workflow efficiency and patient load</li>
+<li>Implement Dr Emma Lane's patient engagement best practices across team</li>
+</ul>
+</div>
 
-                <div class="ranking-item rank-other">
-                    <div class="rank-number" style="color: #6b7280;">4</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Kirrilly Manering</div>
-                        <div class="practitioner-stats">
-                            54 bookings | 87.0% completion rate<br>
-                            Focus: 47 Follow-up, 4 Initial appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-good">Follow-up Specialist</div>
-                </div>
+<div style="margin: 20px 0; padding: 25px; background: #eff6ff; border-radius: 12px; border-left: 5px solid #0284c7;">
+<div style="font-weight: 600; color: #1e40af; margin-bottom: 10px; font-size: 1.1rem;">60-Day Initiatives</div>
+<ul style="color: #1e40af; margin-left: 20px; line-height: 1.6;">
+<li>Launch patient satisfaction survey program</li>
+<li>Implement digital patient education and onboarding improvements</li>
+<li>Establish monthly discharge review meetings</li>
+</ul>
+</div>
 
-                <div class="ranking-item rank-other">
-                    <div class="rank-number" style="color: #6b7280;">5</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Megan Castillo</div>
-                        <div class="practitioner-stats">
-                            50 bookings | 98.0% completion rate<br>
-                            Focus: 43 Follow-up, 7 Initial appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-excellent">Quality Focus</div>
-                </div>
+<div style="margin: 20px 0; padding: 25px; background: #ecfdf5; border-radius: 12px; border-left: 5px solid #059669;">
+<div style="font-weight: 600; color: #065f46; margin-bottom: 10px; font-size: 1.1rem;">90-Day Strategic Goals</div>
+<ul style="color: #065f46; margin-left: 20px; line-height: 1.6;">
+<li>Achieve target discharge rate of <3% across all practitioners</li>
+<li>Increase online booking ratio to 35-40%</li>
+<li>Implement capacity optimization while maintaining quality standards</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 
-                <div class="ranking-item rank-other">
-                    <div class="rank-number" style="color: #6b7280;">6</div>
-                    <div class="practitioner-info">
-                        <div class="practitioner-name">Jeff Cabujat</div>
-                        <div class="practitioner-stats">
-                            35 bookings | 88.6% completion rate<br>
-                            Specialization: 35 Initial, 0 Follow-up appointments
-                        </div>
-                    </div>
-                    <div class="achievement-badge badge-good">Initial Specialist</div>
-                </div>
-            </div>
+<script>
+function showTab(tabName) {
+// Hide all tab contents
+const tabContents = document.querySelectorAll('.tab-content');
+tabContents.forEach(content => {
+content.classList.remove('active');
+});
 
-            <!-- Sales Team Analysis -->
-            <div class="two-column">
-                <div class="card">
-                    <h3 style="margin-bottom: 20px; color: #064e3b;">Sales Team Composition</h3>
-                    <div style="margin: 15px 0; padding: 20px; background: #ecfdf5; border-radius: 10px;">
-                        <div style="font-size: 2rem; font-weight: bold; color: #059669; text-align: center;">751</div>
-                        <div style="text-align: center; color: #047857; font-weight: 600;">Total Sales Team Bookings</div>
-                        <div style="text-align: center; color: #065f46; margin-top: 5px;">71.5% of all appointments</div>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <h4 style="color: #064e3b; margin-bottom: 15px;">Performance Distribution</h4>
-                        <div style="margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>High Performers (90%+ completion)</span>
-                                <strong style="color: #059669;">4 team members</strong>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Good Performers (85-89% completion)</span>
-                                <strong style="color: #eab308;">2 team members</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+// Remove active class from all buttons
+const tabButtons = document.querySelectorAll('.tab-button');
+tabButtons.forEach(button => {
+button.classList.remove('active');
+});
 
-                <div class="card">
-                    <h3 style="margin-bottom: 20px; color: #064e3b;">Appointment Type Specialization</h3>
-                    <div style="margin: 15px 0;">
-                        <h4 style="color: #064e3b; margin-bottom: 10px;">Initial Consultation Leaders</h4>
-                        <div class="source-breakdown">
-                            <span>Candice Madela</span>
-                            <strong style="color: #0284c7;">65 Initial appointments</strong>
-                        </div>
-                        <div class="source-breakdown">
-                            <span>Kurt Ramisch</span>
-                            <strong style="color: #0284c7;">59 Initial appointments</strong>
-                        </div>
-                        <div class="source-breakdown">
-                            <span>Jeff Cabujat</span>
-                            <strong style="color: #0284c7;">35 Initial appointments</strong>
-                        </div>
-                    </div>
-                    
-                    <div style="margin: 15px 0;">
-                        <h4 style="color: #064e3b; margin-bottom: 10px;">Follow-up Specialists</h4>
-                        <div class="source-breakdown">
-                            <span>Ed Regidor</span>
-                            <strong style="color: #059669;">158 Follow-up appointments</strong>
-                        </div>
-                        <div class="source-breakdown">
-                            <span>Candice Madela</span>
-                            <strong style="color: #059669;">155 Follow-up appointments</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+// Show selected tab content
+document.getElementById(tabName).classList.add('active');
 
-        <!-- Strategic Insights Tab -->
-        <div id="insights" class="tab-content">
-            <div class="insight-card">
-                <div class="insight-title">🎯 Executive Summary & Strategic Recommendations</div>
-                <div class="insight-text">
-                    <strong>Overall Performance:</strong> May 2025 shows strong clinic operations with 1,051 appointments and exceptional 92.2% completion rate, significantly above industry standards.<br><br>
-                    <strong>Revenue Drivers:</strong> Sales team generates 71.5% of bookings, demonstrating effective relationship-based patient acquisition and retention strategies.
-                </div>
-            </div>
-
-            <div class="three-column">
-                <div class="insight-card">
-                    <div class="insight-title">💡 Growth Opportunities</div>
-                    <div class="insight-text">
-                        • <strong>Online Channel Expansion:</strong> 28.5% online booking rate shows potential for digital growth<br>
-                        • <strong>Capacity Optimization:</strong> Dr Sandhya Bibin handling 41% of volume - consider load balancing<br>
-                        • <strong>New Patient Acquisition:</strong> 24.3% initial appointments indicates healthy pipeline
-                    </div>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-title">⚠️ Areas for Focus</div>
-                    <div class="insight-text">
-                        • <strong>Gender Balance:</strong> 68.7% male patients - opportunity to attract more female patients<br>
-                        • <strong>No-Show Rate:</strong> 3.6% DNA rate is low but can be further improved<br>
-                        • <strong>Sales Team Training:</strong> Performance variation suggests coaching opportunities
-                    </div>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-title">🚀 Strategic Actions</div>
-                    <div class="insight-text">
-                        • <strong>Scale Success Models:</strong> Replicate Dr Sandhya Bibin's efficiency across team<br>
-                        • <strong>Digital Investment:</strong> Enhance online booking platform for growth<br>
-                        • <strong>Sales Training:</strong> Standardize high-performing sales techniques
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 style="margin-bottom: 20px; color: #064e3b;">Key Performance Indicators & Benchmarks</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <div style="text-align: center; padding: 25px; border: 2px solid #059669; border-radius: 15px; background: #ecfdf5;">
-                        <div style="font-size: 1.2rem; font-weight: bold; color: #059669;">Current Performance</div>
-                        <div style="font-size: 2.5rem; font-weight: bold; margin: 10px 0; color: #047857;">92.2%</div>
-                        <div style="color: #065f46;">Completion Rate</div>
-                    </div>
-                    <div style="text-align: center; padding: 25px; border: 2px solid #eab308; border-radius: 15px; background: #fef3c7;">
-                        <div style="font-size: 1.2rem; font-weight: bold; color: #eab308;">Industry Benchmark</div>
-                        <div style="font-size: 2.5rem; font-weight: bold; margin: 10px 0; color: #92400e;">85%</div>
-                        <div style="color: #78350f;">Typical Completion Rate</div>
-                    </div>
-                    <div style="text-align: center; padding: 25px; border: 2px solid #0284c7; border-radius: 15px; background: #eff6ff;">
-                        <div style="font-size: 1.2rem; font-weight: bold; color: #0284c7;">Growth Target</div>
-                        <div style="font-size: 2.5rem; font-weight: bold; margin: 10px 0; color: #1d4ed8;">95%</div>
-                        <div style="color: #1e3a8a;">Stretch Goal</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 style="margin-bottom: 20px; color: #064e3b;">30-60-90 Day Action Plan</h3>
-                
-                <div style="margin: 20px 0; padding: 25px; background: #fef3c7; border-radius: 12px; border-left: 5px solid #eab308;">
-                    <div style="font-weight: 600; color: #92400e; margin-bottom: 10px; font-size: 1.1rem;">30-Day Priorities</div>
-                    <ul style="color: #92400e; margin-left: 20px; line-height: 1.6;">
-                        <li>Analyze Dr Sandhya Bibin's workflow for replication across team</li>
-                        <li>Implement sales team best practice sharing sessions</li>
-                        <li>Review online booking user experience and identify improvements</li>
-                    </ul>
-                </div>
-
-                <div style="margin: 20px 0; padding: 25px; background: #eff6ff; border-radius: 12px; border-left: 5px solid #0284c7;">
-                    <div style="font-weight: 600; color: #1e40af; margin-bottom: 10px; font-size: 1.1rem;">60-Day Initiatives</div>
-                    <ul style="color: #1e40af; margin-left: 20px; line-height: 1.6;">
-                        <li>Launch targeted marketing campaign to increase female patient ratio</li>
-                        <li>Implement advanced online booking features and automation</li>
-                        <li>Establish practitioner performance coaching program</li>
-                    </ul>
-                </div>
-
-                <div style="margin: 20px 0; padding: 25px; background: #ecfdf5; border-radius: 12px; border-left: 5px solid #059669;">
-                    <div style="font-weight: 600; color: #065f46; margin-bottom: 10px; font-size: 1.1rem;">90-Day Strategic Goals</div>
-                    <ul style="color: #065f46; margin-left: 20px; line-height: 1.6;">
-                        <li>Achieve 95% completion rate across all practitioners</li>
-                        <li>Increase online booking ratio to 35-40%</li>
-                        <li>Expand clinic capacity while maintaining quality standards</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
-        }
-    </script>
+// Add active class to clicked button
+event.target.classList.add('active');
+}
+</script>
 </body>
 </html>
