@@ -526,120 +526,140 @@ Sales Team ↕
 <!-- Detailed Discharge Analysis Table with Percentages -->
 <div class="card">
 <h3 style="margin-bottom: 20px; color: #064e3b;">Detailed Discharge Analysis by Practitioner</h3>
-<table class="table">
+<div style="overflow-x: auto;">
+<table class="table" id="dischargeTable">
 <thead>
 <tr>
-<th>Risk Level</th>
-<th>Practitioner</th>
-<th>Total Appointments</th>
-<th>Total Discharges</th>
-<th>Patient-Initiated</th>
-<th>Practitioner-Initiated</th>
-<th>Patient Request % of Appointments</th>
-<th>Practitioner Request % of Appointments</th>
-<th>Total Discharge % of Appointments</th>
-<th>Retention Priority</th>
+<th onclick="sortDischargeTable(0)" style="cursor: pointer;">Risk Level ↕</th>
+<th onclick="sortDischargeTable(1)" style="cursor: pointer;">Practitioner ↕</th>
+<th onclick="sortDischargeTable(2)" style="cursor: pointer;">Total Appointments ↕</th>
+<th onclick="sortDischargeTable(3)" style="cursor: pointer;">Total Discharges ↕</th>
+<th onclick="sortDischargeTable(4)" style="cursor: pointer;">Patient-Initiated ↕</th>
+<th onclick="sortDischargeTable(5)" style="cursor: pointer;">Practitioner-Initiated ↕</th>
+<th style="cursor: pointer;">
+Patient Request % of Appointments ↕
+<div style="margin-top: 5px;">
+<button onclick="sortDischargeTableBy(6, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortDischargeTableBy(6, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Practitioner Request % of Appointments ↕
+<div style="margin-top: 5px;">
+<button onclick="sortDischargeTableBy(7, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortDischargeTableBy(7, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th style="cursor: pointer;">
+Total Discharge % of Appointments ↕
+<div style="margin-top: 5px;">
+<button onclick="sortDischargeTableBy(8, 'number')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By #</button>
+<button onclick="sortDischargeTableBy(8, 'percent')" style="font-size: 0.7rem; padding: 2px 5px; margin: 0 2px; background: #e5e7eb; border: none; border-radius: 3px; cursor: pointer;">By %</button>
+</div>
+</th>
+<th onclick="sortDischargeTable(9)" style="cursor: pointer;">Retention Priority ↕</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background: #fef2f2;">
 <td><span style="font-size: 1.2rem;">🔴</span> <strong style="color: #dc2626;">HIGH RISK</strong></td>
 <td><strong>Dr Sandhya Bibin</strong></td>
-<td><strong>432</strong></td>
-<td style="color: #dc2626; font-weight: bold; font-size: 1.1rem;">31</td>
-<td style="color: #ea580c; font-weight: bold;">17</td>
-<td style="color: #7c3aed; font-weight: bold;">14</td>
-<td style="color: #dc2626; font-weight: bold;">3.9%</td>
-<td style="color: #dc2626; font-weight: bold;">3.2%</td>
-<td style="color: #dc2626; font-weight: bold;">7.2%</td>
-<td style="color: #dc2626; font-weight: bold;">IMMEDIATE ACTION</td>
+<td data-value="432"><strong>432</strong></td>
+<td data-value="31" style="color: #dc2626; font-weight: bold; font-size: 1.1rem;">31</td>
+<td data-value="17" style="color: #ea580c; font-weight: bold;">17</td>
+<td data-value="14" style="color: #7c3aed; font-weight: bold;">14</td>
+<td data-value="3.9" style="color: #dc2626; font-weight: bold;">3.9%</td>
+<td data-value="3.2" style="color: #dc2626; font-weight: bold;">3.2%</td>
+<td data-value="7.2" style="color: #dc2626; font-weight: bold;">7.2%</td>
+<td data-value="1" style="color: #dc2626; font-weight: bold;">IMMEDIATE ACTION</td>
 </tr>
 <tr style="background: #fff7ed;">
 <td><span style="font-size: 1.2rem;">🟠</span> <strong style="color: #ea580c;">HIGH RISK</strong></td>
 <td><strong>Dr Kushal Porwal</strong></td>
-<td><strong>126</strong></td>
-<td style="color: #ea580c; font-weight: bold; font-size: 1.1rem;">12</td>
-<td style="color: #ea580c; font-weight: bold;">7</td>
-<td style="color: #7c3aed; font-weight: bold;">5</td>
-<td style="color: #ea580c; font-weight: bold;">5.6%</td>
-<td style="color: #ea580c; font-weight: bold;">4.0%</td>
-<td style="color: #ea580c; font-weight: bold;">9.5%</td>
-<td style="color: #ea580c; font-weight: bold;">URGENT REVIEW</td>
+<td data-value="126"><strong>126</strong></td>
+<td data-value="12" style="color: #ea580c; font-weight: bold; font-size: 1.1rem;">12</td>
+<td data-value="7" style="color: #ea580c; font-weight: bold;">7</td>
+<td data-value="5" style="color: #7c3aed; font-weight: bold;">5</td>
+<td data-value="5.6" style="color: #ea580c; font-weight: bold;">5.6%</td>
+<td data-value="4.0" style="color: #ea580c; font-weight: bold;">4.0%</td>
+<td data-value="9.5" style="color: #ea580c; font-weight: bold;">9.5%</td>
+<td data-value="2" style="color: #ea580c; font-weight: bold;">URGENT REVIEW</td>
 </tr>
 <tr style="background: #fffbeb;">
 <td><span style="font-size: 1.2rem;">🟡</span> <strong style="color: #f59e0b;">MEDIUM</strong></td>
 <td><strong>Dr Julius Ajayi</strong></td>
-<td><strong>154</strong></td>
-<td style="color: #f59e0b; font-weight: bold;">6</td>
-<td>5</td>
-<td>1</td>
-<td style="color: #f59e0b; font-weight: bold;">3.2%</td>
-<td style="color: #f59e0b; font-weight: bold;">0.6%</td>
-<td style="color: #f59e0b; font-weight: bold;">3.9%</td>
-<td style="color: #f59e0b; font-weight: bold;">MONITOR CLOSELY</td>
+<td data-value="154"><strong>154</strong></td>
+<td data-value="6" style="color: #f59e0b; font-weight: bold;">6</td>
+<td data-value="5">5</td>
+<td data-value="1">1</td>
+<td data-value="3.2" style="color: #f59e0b; font-weight: bold;">3.2%</td>
+<td data-value="0.6" style="color: #f59e0b; font-weight: bold;">0.6%</td>
+<td data-value="3.9" style="color: #f59e0b; font-weight: bold;">3.9%</td>
+<td data-value="3" style="color: #f59e0b; font-weight: bold;">MONITOR CLOSELY</td>
 </tr>
 <tr class="performer-good">
 <td><span style="font-size: 1.2rem;">🟡</span> LOW</td>
 <td><strong>Dr Julia</strong></td>
-<td><strong>4</strong></td>
-<td>4</td>
-<td>4</td>
-<td>0</td>
-<td>100.0%</td>
-<td>0.0%</td>
-<td>100.0%</td>
-<td>MONITOR</td>
+<td data-value="4"><strong>4</strong></td>
+<td data-value="4">4</td>
+<td data-value="4">4</td>
+<td data-value="0">0</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="0.0">0.0%</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="4">MONITOR</td>
 </tr>
 <tr class="performer-good">
 <td><span style="font-size: 1.2rem;">🟡</span> LOW</td>
 <td><strong>Dr Jeremy</strong></td>
-<td><strong>4</strong></td>
-<td>4</td>
-<td>4</td>
-<td>0</td>
-<td>100.0%</td>
-<td>0.0%</td>
-<td>100.0%</td>
-<td>MONITOR</td>
+<td data-value="4"><strong>4</strong></td>
+<td data-value="4">4</td>
+<td data-value="4">4</td>
+<td data-value="0">0</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="0.0">0.0%</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="4">MONITOR</td>
 </tr>
 <tr class="performer-excellent">
 <td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
 <td><strong>Dr Aarons Gauntlet Rogers</strong></td>
-<td><strong>79</strong></td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>2.5%</td>
-<td>1.3%</td>
-<td>3.8%</td>
-<td>ACCEPTABLE</td>
+<td data-value="79"><strong>79</strong></td>
+<td data-value="3">3</td>
+<td data-value="2">2</td>
+<td data-value="1">1</td>
+<td data-value="2.5">2.5%</td>
+<td data-value="1.3">1.3%</td>
+<td data-value="3.8">3.8%</td>
+<td data-value="5">ACCEPTABLE</td>
 </tr>
 <tr class="performer-excellent">
 <td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
 <td><strong>Dr Luke</strong></td>
-<td><strong>3</strong></td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>100.0%</td>
-<td>0.0%</td>
-<td>100.0%</td>
-<td>ACCEPTABLE</td>
+<td data-value="3"><strong>3</strong></td>
+<td data-value="3">3</td>
+<td data-value="3">3</td>
+<td data-value="0">0</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="0.0">0.0%</td>
+<td data-value="100.0">100.0%</td>
+<td data-value="5">ACCEPTABLE</td>
 </tr>
 <tr class="performer-excellent">
 <td><span style="font-size: 1.2rem;">🟢</span> LOW</td>
 <td><strong>Dr Emma Lane</strong></td>
-<td><strong>64</strong></td>
-<td style="color: #059669; font-weight: bold;">0</td>
-<td>0</td>
-<td>0</td>
-<td style="color: #059669; font-weight: bold;">0.0%</td>
-<td style="color: #059669; font-weight: bold;">0.0%</td>
-<td style="color: #059669; font-weight: bold;">0.0%</td>
-<td style="color: #059669; font-weight: bold;">EXCELLENT</td>
+<td data-value="64"><strong>64</strong></td>
+<td data-value="0" style="color: #059669; font-weight: bold;">0</td>
+<td data-value="0">0</td>
+<td data-value="0">0</td>
+<td data-value="0.0" style="color: #059669; font-weight: bold;">0.0%</td>
+<td data-value="0.0" style="color: #059669; font-weight: bold;">0.0%</td>
+<td data-value="0.0" style="color: #059669; font-weight: bold;">0.0%</td>
+<td data-value="6" style="color: #059669; font-weight: bold;">EXCELLENT</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 
 <div class="insight-card">
@@ -891,6 +911,161 @@ button.style.color = '#374151';
 const targetButtons = table.querySelectorAll(`th button[onclick="sortTableBy(${columnIndex}, '${sortType}')"]`);
 targetButtons.forEach(button => {
 button.style.background = '#059669';
+button.style.color = 'white';
+button.textContent = button.textContent.replace(' ↑', '').replace(' ↓', '') + (isAscending ? ' ↑' : ' ↓');
+});
+}
+
+function sortDischargeTable(columnIndex) {
+const table = document.getElementById('dischargeTable');
+const tbody = table.querySelector('tbody');
+const rows = Array.from(tbody.querySelectorAll('tr'));
+
+// Determine sort direction
+const isAscending = table.getAttribute('data-sort-direction') !== 'asc';
+table.setAttribute('data-sort-direction', isAscending ? 'asc' : 'desc');
+
+// Sort rows
+rows.sort((a, b) => {
+const cellA = a.cells[columnIndex];
+const cellB = b.cells[columnIndex];
+
+let valueA, valueB;
+
+// Check if cell has data-value attribute for numerical sorting
+if (cellA.hasAttribute('data-value')) {
+valueA = parseFloat(cellA.getAttribute('data-value'));
+valueB = parseFloat(cellB.getAttribute('data-value'));
+} else {
+// Get cell text content
+const textA = cellA.textContent.trim();
+const textB = cellB.textContent.trim();
+
+// Extract first number for numerical sorting
+const numMatchA = textA.match(/\d+/);
+const numMatchB = textB.match(/\d+/);
+
+if (numMatchA && numMatchB) {
+valueA = parseFloat(numMatchA[0]);
+valueB = parseFloat(numMatchB[0]);
+} else {
+// Text sorting
+valueA = textA.toLowerCase();
+valueB = textB.toLowerCase();
+}
+}
+
+if (typeof valueA === 'number' && typeof valueB === 'number') {
+return isAscending ? valueA - valueB : valueB - valueA;
+} else {
+if (valueA < valueB) return isAscending ? -1 : 1;
+if (valueA > valueB) return isAscending ? 1 : -1;
+return 0;
+}
+});
+
+// Clear and repopulate tbody
+tbody.innerHTML = '';
+rows.forEach(row => tbody.appendChild(row));
+
+// Update header indicators
+const headers = table.querySelectorAll('th');
+headers.forEach((header, index) => {
+if (index === columnIndex) {
+const text = header.textContent.replace(' ↕', '').replace(' ↑', '').replace(' ↓', '');
+header.textContent = text + (isAscending ? ' ↑' : ' ↓');
+} else {
+const text = header.textContent.replace(' ↕', '').replace(' ↑', '').replace(' ↓', '');
+header.textContent = text + ' ↕';
+}
+});
+}
+
+function sortDischargeTableBy(columnIndex, sortType) {
+const table = document.getElementById('dischargeTable');
+const tbody = table.querySelector('tbody');
+const rows = Array.from(tbody.querySelectorAll('tr'));
+
+// Determine sort direction
+const currentDirection = table.getAttribute(`data-sort-direction-${columnIndex}-${sortType}`) || 'desc';
+const isAscending = currentDirection !== 'asc';
+table.setAttribute(`data-sort-direction-${columnIndex}-${sortType}`, isAscending ? 'asc' : 'desc');
+
+// Sort rows
+rows.sort((a, b) => {
+const cellA = a.cells[columnIndex];
+const cellB = b.cells[columnIndex];
+
+let valueA, valueB;
+
+// Check if cell has data-value attribute for numerical sorting
+if (cellA.hasAttribute('data-value')) {
+valueA = parseFloat(cellA.getAttribute('data-value'));
+valueB = parseFloat(cellB.getAttribute('data-value'));
+} else {
+const textA = cellA.textContent.trim();
+const textB = cellB.textContent.trim();
+
+if (sortType === 'percent') {
+// For percentage columns, the data-value already contains the percentage number
+// But if no data-value, extract from text like "3.9%"
+const percentMatchA = textA.match(/(\d+\.?\d*)%/);
+const percentMatchB = textB.match(/(\d+\.?\d*)%/);
+
+if (percentMatchA && percentMatchB) {
+valueA = parseFloat(percentMatchA[1]);
+valueB = parseFloat(percentMatchB[1]);
+} else {
+valueA = 0;
+valueB = 0;
+}
+} else {
+// For number sorting, we need to get the underlying count
+// Since these are percentage columns, we'll calculate from the data-value and percentage
+// For columns 6, 7, 8 (percentage columns), get the raw count from other columns
+if (columnIndex === 6) { // Patient Request % - get from Patient-Initiated column (index 4)
+const patientInitiatedA = a.cells[4].getAttribute('data-value') || a.cells[4].textContent.match(/\d+/)?.[0] || 0;
+const patientInitiatedB = b.cells[4].getAttribute('data-value') || b.cells[4].textContent.match(/\d+/)?.[0] || 0;
+valueA = parseFloat(patientInitiatedA);
+valueB = parseFloat(patientInitiatedB);
+} else if (columnIndex === 7) { // Practitioner Request % - get from Practitioner-Initiated column (index 5)
+const practitionerInitiatedA = a.cells[5].getAttribute('data-value') || a.cells[5].textContent.match(/\d+/)?.[0] || 0;
+const practitionerInitiatedB = b.cells[5].getAttribute('data-value') || b.cells[5].textContent.match(/\d+/)?.[0] || 0;
+valueA = parseFloat(practitionerInitiatedA);
+valueB = parseFloat(practitionerInitiatedB);
+} else if (columnIndex === 8) { // Total Discharge % - get from Total Discharges column (index 3)
+const totalDischargesA = a.cells[3].getAttribute('data-value') || a.cells[3].textContent.match(/\d+/)?.[0] || 0;
+const totalDischargesB = b.cells[3].getAttribute('data-value') || b.cells[3].textContent.match(/\d+/)?.[0] || 0;
+valueA = parseFloat(totalDischargesA);
+valueB = parseFloat(totalDischargesB);
+} else {
+// Fallback to first number in text
+const numMatchA = textA.match(/(\d+)/);
+const numMatchB = textB.match(/(\d+)/);
+valueA = numMatchA ? parseFloat(numMatchA[1]) : 0;
+valueB = numMatchB ? parseFloat(numMatchB[1]) : 0;
+}
+}
+}
+
+return isAscending ? valueA - valueB : valueB - valueA;
+});
+
+// Clear and repopulate tbody
+tbody.innerHTML = '';
+rows.forEach(row => tbody.appendChild(row));
+
+// Update button indicators
+const buttons = table.querySelectorAll(`th button`);
+buttons.forEach(button => {
+button.style.background = '#e5e7eb';
+button.style.color = '#374151';
+});
+
+// Highlight active button
+const targetButtons = table.querySelectorAll(`th button[onclick="sortDischargeTableBy(${columnIndex}, '${sortType}')"]`);
+targetButtons.forEach(button => {
+button.style.background = '#dc2626';
 button.style.color = 'white';
 button.textContent = button.textContent.replace(' ↑', '').replace(' ↓', '') + (isAscending ? ' ↑' : ' ↓');
 });
