@@ -6,13 +6,13 @@ const Dashboard = () => {
   // Sample data - replace with your actual data source
   const [timeRange, setTimeRange] = useState('6months');
   
-  // Patient Value & Retention Data - Updated with real consultation data
+  // Patient Value & Retention Data
   const patientMetrics = {
     avgLTV: 325,
     ltv_change: 12.5,
     churnRate: 18.2,
     churn_change: -3.1,
-    avgTimeBetweenConsults: 147, // Real weighted average from consultation data
+    avgTimeBetweenConsults: 42,
     time_change: -5.2,
     totalActivePatients: 1247
   };
@@ -37,39 +37,39 @@ const Dashboard = () => {
     { month: 'Jun', total: 589000, initial: 236000, followup: 353000, salesTeam: 442000, online: 147000 }
   ];
 
-  // Follow-up revenue by days since last appointment - REAL DATA from CSV with consultation counts
+  // Follow-up revenue by days since last appointment - REAL DATA from CSV
   const followUpRevenueByDays = [
-    { dayRange: '0-7', revenue: 12740, consults: 140, revenuePerConsult: 91 },
-    { dayRange: '7-14', revenue: 9100, consults: 100, revenuePerConsult: 91 },
-    { dayRange: '14-21', revenue: 10829, consults: 119, revenuePerConsult: 91 },
-    { dayRange: '21-28', revenue: 9828, consults: 108, revenuePerConsult: 91 },
-    { dayRange: '28-35', revenue: 25571, consults: 281, revenuePerConsult: 91 },
-    { dayRange: '35-42', revenue: 16016, consults: 176, revenuePerConsult: 91 },
-    { dayRange: '42-49', revenue: 13468, consults: 148, revenuePerConsult: 91 },
-    { dayRange: '49-56', revenue: 9919, consults: 109, revenuePerConsult: 91 },
-    { dayRange: '56-63', revenue: 9191, consults: 101, revenuePerConsult: 91 },
-    { dayRange: '63-70', revenue: 9737, consults: 107, revenuePerConsult: 91 },
-    { dayRange: '70-77', revenue: 9373, consults: 103, revenuePerConsult: 91 },
-    { dayRange: '77-84', revenue: 9282, consults: 102, revenuePerConsult: 91 },
-    { dayRange: '84-91', revenue: 7371, consults: 81, revenuePerConsult: 91 },
-    { dayRange: '91-98', revenue: 14833, consults: 163, revenuePerConsult: 91 },
-    { dayRange: '98-105', revenue: 8645, consults: 95, revenuePerConsult: 91 },
-    { dayRange: '105-112', revenue: 9282, consults: 102, revenuePerConsult: 91 },
-    { dayRange: '112-119', revenue: 9282, consults: 102, revenuePerConsult: 91 },
-    { dayRange: '119-126', revenue: 7735, consults: 85, revenuePerConsult: 91 },
-    { dayRange: '126-133', revenue: 8008, consults: 88, revenuePerConsult: 91 },
-    { dayRange: '133-140', revenue: 8645, consults: 95, revenuePerConsult: 91 },
-    { dayRange: '140-147', revenue: 7735, consults: 85, revenuePerConsult: 91 },
-    { dayRange: '147-154', revenue: 10920, consults: 120, revenuePerConsult: 91 },
-    { dayRange: '154-161', revenue: 9191, consults: 101, revenuePerConsult: 91 },
-    { dayRange: '161-168', revenue: 8281, consults: 91, revenuePerConsult: 91 },
-    { dayRange: '168-175', revenue: 11466, consults: 126, revenuePerConsult: 91 },
-    { dayRange: '175-182', revenue: 35763, consults: 393, revenuePerConsult: 91 },
-    { dayRange: '182-189', revenue: 33852, consults: 372, revenuePerConsult: 91 },
-    { dayRange: '189-196', revenue: 12467, consults: 137, revenuePerConsult: 91 },
-    { dayRange: '196-203', revenue: 9646, consults: 106, revenuePerConsult: 91 },
-    { dayRange: '203-210', revenue: 8281, consults: 91, revenuePerConsult: 91 },
-    { dayRange: '210+', revenue: 32760, consults: 360, revenuePerConsult: 91 }
+    { dayRange: '0-7', revenue: 12740 },
+    { dayRange: '7-14', revenue: 9100 },
+    { dayRange: '14-21', revenue: 10829 },
+    { dayRange: '21-28', revenue: 9828 },
+    { dayRange: '28-35', revenue: 25571 },
+    { dayRange: '35-42', revenue: 16016 },
+    { dayRange: '42-49', revenue: 13468 },
+    { dayRange: '49-56', revenue: 9919 },
+    { dayRange: '56-63', revenue: 9191 },
+    { dayRange: '63-70', revenue: 9737 },
+    { dayRange: '70-77', revenue: 9373 },
+    { dayRange: '77-84', revenue: 9282 },
+    { dayRange: '84-91', revenue: 7371 },
+    { dayRange: '91-98', revenue: 14833 },
+    { dayRange: '98-105', revenue: 8645 },
+    { dayRange: '105-112', revenue: 9282 },
+    { dayRange: '112-119', revenue: 9282 },
+    { dayRange: '119-126', revenue: 7735 },
+    { dayRange: '126-133', revenue: 8008 },
+    { dayRange: '133-140', revenue: 8645 },
+    { dayRange: '140-147', revenue: 7735 },
+    { dayRange: '147-154', revenue: 10920 },
+    { dayRange: '154-161', revenue: 9191 },
+    { dayRange: '161-168', revenue: 8281 },
+    { dayRange: '168-175', revenue: 11466 },
+    { dayRange: '175-182', revenue: 35763 },
+    { dayRange: '182-189', revenue: 33852 },
+    { dayRange: '189-196', revenue: 12467 },
+    { dayRange: '196-203', revenue: 9646 },
+    { dayRange: '203-210', revenue: 8281 },
+    { dayRange: '210+', revenue: 32760 }
   ];
 
   // Revenue split data for pie chart
@@ -159,7 +159,7 @@ const Dashboard = () => {
             change={patientMetrics.time_change}
             icon={Calendar}
             format="days"
-            alert={patientMetrics.avgTimeBetweenConsults > 120}
+            alert={patientMetrics.avgTimeBetweenConsults > 45}
           />
           <MetricCard
             title="Active Patients"
@@ -218,27 +218,27 @@ const Dashboard = () => {
             </ResponsiveContainer>
             <div className="mt-4 p-3 bg-blue-50 rounded">
               <p className="text-sm text-blue-800">
-                <strong>Peak consultation periods: 175-182 days (393 consults) and 182-189 days (372 consults).</strong> 
-                28-35 days also shows high activity (281 consults). Average revenue per consultation: $91.
-                Major opportunity: 6-month automated follow-up sequence.
+                <strong>Peak periods: 28-35 days ($25.6K) and 175-189 days ($69.6K combined).</strong> 
+                Early follow-ups (0-28 days) generate $42.7K. 
+                Major opportunity: 6-month follow-up campaign could capture significant revenue.
               </p>
             </div>
             <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-2 bg-green-50 rounded">
-                <p className="font-bold text-green-800">765</p>
-                <p className="text-green-600">6-month consults</p>
+                <p className="font-bold text-green-800">$42.7K</p>
+                <p className="text-green-600">0-28 days</p>
               </div>
               <div className="text-center p-2 bg-yellow-50 rounded">
-                <p className="font-bold text-yellow-800">281</p>
-                <p className="text-yellow-600">1-month consults</p>
+                <p className="font-bold text-yellow-800">$69.6K</p>
+                <p className="text-yellow-600">175-189 days</p>
               </div>
               <div className="text-center p-2 bg-purple-50 rounded">
-                <p className="font-bold text-purple-800">$91</p>
-                <p className="text-purple-600">Per consultation</p>
+                <p className="font-bold text-purple-800">$25.6K</p>
+                <p className="text-purple-600">28-35 days</p>
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
-                <p className="font-bold text-gray-800">4,812</p>
-                <p className="text-gray-600">Total consults</p>
+                <p className="font-bold text-gray-800">$361.4K</p>
+                <p className="text-gray-600">Total (shown)</p>
               </div>
             </div>
           </div>
