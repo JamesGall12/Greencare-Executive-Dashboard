@@ -1,141 +1,685 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Greencare Executive Dashboard</title>
-<style>
-body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-.container { max-width: 1000px; margin: 0 auto; }
-.header { background: white; padding: 30px; text-align: center; margin-bottom: 30px; border-radius: 10px; }
-.card { background: white; padding: 25px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-.metric-value { font-size: 28px; font-weight: bold; color: #2563eb; }
-.insight { padding: 20px; background: #eff6ff; text-align: center; margin: 10px; display: inline-block; width: 180px; border-radius: 8px; }
-.summary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; padding: 40px; text-align: center; border-radius: 10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greencare Executive Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .metric-card.alert {
+            border-left-color: #ff6b6b;
+        }
+        
+        .metric-card.alert::before {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+        }
+        
+        .metric-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .metric-change {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .metric-change.positive {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .metric-change.negative {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .insight-card {
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .insight-card:hover::before {
+            left: 100%;
+        }
+        
+        .insight-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .insight-green {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border: 2px solid #22c55e;
+        }
+        
+        .insight-yellow {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #eab308;
+        }
+        
+        .insight-blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+        }
+        
+        .insight-purple {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border: 2px solid #8b5cf6;
+        }
+        
+        .insight-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .insight-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .monthly-revenue-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .risk-card {
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .risk-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .risk-medium {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left-color: #f59e0b;
+        }
+        
+        .risk-high {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left-color: #ef4444;
+        }
+        
+        .risk-critical {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-left-color: #dc2626;
+        }
+        
+        .risk-lost {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-left-color: #7f1d1d;
+        }
+        
+        .summary-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .summary-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .summary-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .alert-box::before {
+            content: "⚠️";
+            font-size: 1.5rem;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
+        
+        .alert-text {
+            margin-left: 40px;
+            color: #92400e;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
+    <div class="container">
+        <div class="header">
+            <h1>Greencare Executive Dashboard</h1>
+            <p>Executive Performance & Operations Overview</p>
+        </div>
 
-<div class="header">
-<h1>Greencare Executive Dashboard</h1>
-<p>Executive Performance and Operations Overview</p>
-</div>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Average Patient LTV</div>
+                <div class="metric-value">$325</div>
+                <div class="metric-change positive">↗ +12.5% vs last period</div>
+            </div>
 
-<div class="grid">
-<div class="card">
-<h3>Average Patient LTV</h3>
-<div class="metric-value">$325</div>
-<p style="color: #10b981;">+12.5% vs last period</p>
-</div>
-<div class="card">
-<h3>Churn Rate</h3>
-<div class="metric-value">18.2%</div>
-<p style="color: #10b981;">-3.1% vs last period</p>
-</div>
-<div class="card">
-<h3>Time Between Consults</h3>
-<div class="metric-value">147 days</div>
-<p style="color: #10b981;">-5.2% vs last period</p>
-</div>
-<div class="card">
-<h3>Active Patients</h3>
-<div class="metric-value">1,247</div>
-</div>
-</div>
+            <div class="metric-card alert">
+                <div class="metric-title">Churn Rate</div>
+                <div class="metric-value">18.2%</div>
+                <div class="metric-change positive">↘ -3.1% vs last period</div>
+            </div>
 
-<div class="card">
-<h2>Follow-up Revenue Analysis</h2>
-<h3>Peak Consultation Periods:</h3>
-<ul>
-<li><strong>175-182 days:</strong> 393 consultations generating $35,763 revenue</li>
-<li><strong>182-189 days:</strong> 372 consultations generating $33,852 revenue</li>
-<li><strong>28-35 days:</strong> 281 consultations generating $25,571 revenue</li>
-</ul>
-<p><strong>Key Insight:</strong> Major automation opportunity at 6-month mark with 765 total consultations generating $69,615 combined revenue.</p>
+            <div class="metric-card alert">
+                <div class="metric-title">Time Between Consults</div>
+                <div class="metric-value">147 days</div>
+                <div class="metric-change positive">↘ -5.2% vs last period</div>
+            </div>
 
-<div style="text-align: center;">
-<div class="insight">
-<h3>765 consults</h3>
-<p>6-month peak (175-189 days)</p>
-</div>
-<div class="insight">
-<h3>281 consults</h3>
-<p>1-month peak (28-35 days)</p>
-</div>
-<div class="insight">
-<h3>$91</h3>
-<p>Revenue per consultation</p>
-</div>
-<div class="insight">
-<h3>4,812</h3>
-<p>Total consultations (6 months)</p>
-</div>
-</div>
-</div>
+            <div class="metric-card">
+                <div class="metric-title">Active Patients</div>
+                <div class="metric-value">1,247</div>
+            </div>
+        </div>
 
-<div class="card">
-<h2>Monthly Revenue Breakdown</h2>
-<p><strong>January:</strong> $487K | <strong>February:</strong> $523K | <strong>March:</strong> $498K</p>
-<p><strong>April:</strong> $541K | <strong>May:</strong> $567K | <strong>June:</strong> $589K (+3.9% vs May)</p>
-<p style="background: #eff6ff; padding: 15px; border-radius: 8px;"><strong>June Performance:</strong> $589K total revenue, $472 revenue per patient, 75% sales team vs 25% online bookings</p>
-</div>
+        <div class="section">
+            <h2 class="section-title">Follow-up Revenue Analysis</h2>
+            
+            <div class="chart-container">
+                <canvas id="followUpChart"></canvas>
+            </div>
 
-<div class="card">
-<h2>CAC vs LTV Trend</h2>
-<p><strong>January:</strong> LTV $305, CAC $145 (Ratio: 2.1:1)</p>
-<p><strong>February:</strong> LTV $312, CAC $152 (Ratio: 2.1:1)</p>
-<p><strong>March:</strong> LTV $318, CAC $138 (Ratio: 2.3:1)</p>
-<p><strong>April:</strong> LTV $322, CAC $141 (Ratio: 2.3:1)</p>
-<p><strong>May:</strong> LTV $323, CAC $133 (Ratio: 2.4:1)</p>
-<p><strong>June:</strong> LTV $325, CAC $128 (Ratio: 2.5:1)</p>
-<p style="background: #d1fae5; padding: 15px; border-radius: 8px; color: #065f46;"><strong>Current Ratio: 2.5:1</strong> - Good! Target is 3:1 minimum. Operations efficiency is driving down CAC while increasing LTV.</p>
-</div>
+            <div class="insights-grid">
+                <div class="insight-card insight-green">
+                    <div class="insight-value">765 consults</div>
+                    <div class="insight-label">6-month peak (175-189 days)</div>
+                </div>
+                <div class="insight-card insight-yellow">
+                    <div class="insight-value">281 consults</div>
+                    <div class="insight-label">1-month peak (28-35 days)</div>
+                </div>
+                <div class="insight-card insight-purple">
+                    <div class="insight-value">$91</div>
+                    <div class="insight-label">Revenue per consultation</div>
+                </div>
+                <div class="insight-card insight-blue">
+                    <div class="insight-value">4,812</div>
+                    <div class="insight-label">Total consultations (6 months)</div>
+                </div>
+            </div>
+        </div>
 
-<div class="card">
-<h2>Patient Churn Risk Analysis</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-<div style="background: #fffbeb; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-<h4 style="color: #d97706;">Medium Risk</h4>
-<h3>78 patients</h3>
-<p>30-45 days</p>
-</div>
-<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #ef4444;">
-<h4 style="color: #dc2626;">High Risk</h4>
-<h3>45 patients</h3>
-<p>46-60 days</p>
-</div>
-<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #dc2626;">
-<h4 style="color: #b91c1c;">Critical Risk</h4>
-<h3>32 patients</h3>
-<p>61-90 days</p>
-</div>
-<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #7f1d1d;">
-<h4 style="color: #7f1d1d;">Lost</h4>
-<h3>28 patients</h3>
-<p>90+ days</p>
-</div>
-</div>
-<p style="background: #fef3c7; padding: 15px; border-radius: 8px; color: #92400e;"><strong>Action Required:</strong> 183 patients at risk of churning. Implement automated follow-up sequences for patients at 30+ days since last visit. Potential revenue at risk: ~$520,000 in LTV.</p>
-</div>
+        <div class="section">
+            <h2 class="section-title">Monthly Revenue Breakdown</h2>
+            <div class="monthly-revenue-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
 
-<div class="summary">
-<h2>Operational Efficiency ROI Summary</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 30px;">
-<div style="text-align: center;">
-<h1 style="font-size: 36px; margin-bottom: 10px;">$247K</h1>
-<p>Monthly revenue increase potential from reducing churn by 3.1%</p>
-</div>
-<div style="text-align: center;">
-<h1 style="font-size: 36px; margin-bottom: 10px;">2.5:1</h1>
-<p>LTV:CAC ratio showing strong customer acquisition efficiency</p>
-</div>
-<div style="text-align: center;">
-<h1 style="font-size: 36px; margin-bottom: 10px;">147 days</h1>
-<p>Average time between consults - automation opportunity</p>
-</div>
-</div>
-</div>
+        <div class="section">
+            <h2 class="section-title">CAC vs LTV Trend</h2>
+            <div class="chart-container">
+                <canvas id="cacChart"></canvas>
+            </div>
+        </div>
 
-</div>
+        <div class="section">
+            <h2 class="section-title">Patient Churn Risk Analysis</h2>
+            
+            <div class="risk-grid">
+                <div class="risk-card risk-medium">
+                    <h4 style="color: #d97706; font-weight: 600;">Medium Risk</h4>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">78</h3>
+                    <p style="color: #64748b;">30-45 days</p>
+                </div>
+                <div class="risk-card risk-high">
+                    <h4 style="color: #dc2626; font-weight: 600;">High Risk</h4>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">45</h3>
+                    <p style="color: #64748b;">46-60 days</p>
+                </div>
+                <div class="risk-card risk-critical">
+                    <h4 style="color: #b91c1c; font-weight: 600;">Critical Risk</h4>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">32</h3>
+                    <p style="color: #64748b;">61-90 days</p>
+                </div>
+                <div class="risk-card risk-lost">
+                    <h4 style="color: #7f1d1d; font-weight: 600;">Lost</h4>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">28</h3>
+                    <p style="color: #64748b;">90+ days</p>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <div class="alert-text">
+                    <strong>Action Required:</strong> 183 patients at risk of churning. Implement automated follow-up sequences for patients at 30+ days since last visit. Potential revenue at risk: ~$520,000 in LTV.
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-section">
+            <h2>Operational Efficiency ROI Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-number">$247K</div>
+                    <div>Monthly revenue increase potential from reducing churn by 3.1%</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">2.5:1</div>
+                    <div>LTV:CAC ratio showing strong customer acquisition efficiency</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">147 days</div>
+                    <div>Average time between consults - automation opportunity</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Follow-up Revenue Chart
+        const followUpCtx = document.getElementById('followUpChart').getContext('2d');
+        new Chart(followUpCtx, {
+            type: 'line',
+            data: {
+                labels: ['0-7', '7-14', '14-21', '21-28', '28-35', '35-42', '42-49', '49-56', '56-63', '63-70', '70-77', '77-84', '84-91', '91-98', '98-105', '105-112', '112-119', '119-126', '126-133', '133-140', '140-147', '147-154', '154-161', '161-168', '168-175', '175-182', '182-189'],
+                datasets: [{
+                    label: 'Follow-up Revenue ($)',
+                    data: [12740, 9100, 10829, 9828, 25571, 16016, 13468, 9919, 9191, 9737, 9373, 9282, 7371, 14833, 8645, 9282, 9282, 7735, 8008, 8645, 7735, 10920, 9191, 8281, 11466, 35763, 33852],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#667eea',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: $' + context.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value/1000) + 'K';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Monthly Revenue Chart
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: [487000, 523000, 498000, 541000, 567000, 589000],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)'
+                    ],
+                    borderColor: [
+                        '#667eea',
+                        '#667eea',
+                        '#667eea',
+                        '#667eea',
+                        '#667eea',
+                        '#764ba2'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: $' + context.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value/1000) + 'K';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // CAC vs LTV Chart
+        const cacCtx = document.getElementById('cacChart').getContext('2d');
+        new Chart(cacCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'LTV ($)',
+                    data: [305, 312, 318, 322, 323, 325],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#22c55e',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }, {
+                    label: 'CAC ($)',
+                    data: [145, 152, 138, 141, 133, 128],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ef4444',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + context.raw;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
