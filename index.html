@@ -1,175 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Greencare Executive Dashboard</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .header {
-      background: white;
-      padding: 30px;
-      text-align: center;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .card {
-      background: white;
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .insight {
-      padding: 20px;
-      background: #eff6ff;
-      text-align: center;
-      margin: 10px 0;
-      border-radius: 8px;
-      display: inline-block;
-      width: 200px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .summary {
-      background: #3b82f6;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-      border-radius: 10px;
-    }
-
-    h1, h2, h3 {
-      margin-bottom: 10px;
-    }
-
-    p {
-      margin: 5px 0 10px 0;
-    }
-
-    ul {
-      margin-top: 10px;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 5px;
-    }
-  </style>
+<title>Greencare Executive Dashboard</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header { background: white; padding: 30px; text-align: center; margin-bottom: 30px; border-radius: 10px; }
+.card { background: white; padding: 25px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.metric-value { font-size: 28px; font-weight: bold; color: #2563eb; }
+.insight { padding: 20px; background: #eff6ff; text-align: center; margin: 10px; display: inline-block; width: 180px; border-radius: 8px; }
+.summary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; padding: 40px; text-align: center; border-radius: 10px; }
+</style>
 </head>
 <body>
+<div class="container">
 
-  <div class="container">
+<div class="header">
+<h1>Greencare Executive Dashboard</h1>
+<p>Executive Performance and Operations Overview</p>
+</div>
 
-    <div class="header">
-      <h1>Greencare Executive Dashboard</h1>
-      <p>Executive Performance and Operations Overview</p>
-    </div>
+<div class="grid">
+<div class="card">
+<h3>Average Patient LTV</h3>
+<div class="metric-value">$325</div>
+<p style="color: #10b981;">+12.5% vs last period</p>
+</div>
+<div class="card">
+<h3>Churn Rate</h3>
+<div class="metric-value">18.2%</div>
+<p style="color: #10b981;">-3.1% vs last period</p>
+</div>
+<div class="card">
+<h3>Time Between Consults</h3>
+<div class="metric-value">147 days</div>
+<p style="color: #10b981;">-5.2% vs last period</p>
+</div>
+<div class="card">
+<h3>Active Patients</h3>
+<div class="metric-value">1,247</div>
+</div>
+</div>
 
-    <div class="grid">
-      <div class="card">
-        <h3>Average Patient LTV</h3>
-        <h2>$325</h2>
-        <p>+12.5% vs last period</p>
-      </div>
-      <div class="card">
-        <h3>Churn Rate</h3>
-        <h2>18.2%</h2>
-        <p>-3.1% vs last period</p>
-      </div>
-      <div class="card">
-        <h3>Time Between Consults</h3>
-        <h2>147 days</h2>
-        <p>-5.2% vs last period</p>
-      </div>
-      <div class="card">
-        <h3>Active Patients</h3>
-        <h2>1,247</h2>
-      </div>
-    </div>
+<div class="card">
+<h2>Follow-up Revenue Analysis</h2>
+<h3>Peak Consultation Periods:</h3>
+<ul>
+<li><strong>175-182 days:</strong> 393 consultations generating $35,763 revenue</li>
+<li><strong>182-189 days:</strong> 372 consultations generating $33,852 revenue</li>
+<li><strong>28-35 days:</strong> 281 consultations generating $25,571 revenue</li>
+</ul>
+<p><strong>Key Insight:</strong> Major automation opportunity at 6-month mark with 765 total consultations generating $69,615 combined revenue.</p>
 
-    <div class="card">
-      <h2>Follow-up Revenue Analysis</h2>
-      <p><strong>Peak Consultation Periods:</strong></p>
-      <ul>
-        <li>175–182 days: 393 consultations generating $35,763 revenue</li>
-        <li>182–189 days: 372 consultations generating $33,852 revenue</li>
-        <li>28–35 days: 281 consultations generating $25,571 revenue</li>
-      </ul>
-      <p><strong>Key Insight:</strong> Major automation opportunity at 6-month mark with 765 total consultations generating $69,615 combined revenue.</p>
+<div style="text-align: center;">
+<div class="insight">
+<h3>765 consults</h3>
+<p>6-month peak (175-189 days)</p>
+</div>
+<div class="insight">
+<h3>281 consults</h3>
+<p>1-month peak (28-35 days)</p>
+</div>
+<div class="insight">
+<h3>$91</h3>
+<p>Revenue per consultation</p>
+</div>
+<div class="insight">
+<h3>4,812</h3>
+<p>Total consultations (6 months)</p>
+</div>
+</div>
+</div>
 
-      <div class="grid">
-        <div class="insight">
-          <h3>765 consults</h3>
-          <p>6-month peak</p>
-        </div>
-        <div class="insight">
-          <h3>281 consults</h3>
-          <p>1-month peak</p>
-        </div>
-        <div class="insight">
-          <h3>$91</h3>
-          <p>Per consultation</p>
-        </div>
-        <div class="insight">
-          <h3>4,812</h3>
-          <p>Total consults</p>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<h2>Monthly Revenue Breakdown</h2>
+<p><strong>January:</strong> $487K | <strong>February:</strong> $523K | <strong>March:</strong> $498K</p>
+<p><strong>April:</strong> $541K | <strong>May:</strong> $567K | <strong>June:</strong> $589K (+3.9% vs May)</p>
+<p style="background: #eff6ff; padding: 15px; border-radius: 8px;"><strong>June Performance:</strong> $589K total revenue, $472 revenue per patient, 75% sales team vs 25% online bookings</p>
+</div>
 
-    <div class="card">
-      <h2>Monthly Revenue Breakdown</h2>
-      <p><strong>Jan:</strong> $487K | <strong>Feb:</strong> $523K | <strong>Mar:</strong> $498K</p>
-      <p><strong>Apr:</strong> $541K | <strong>May:</strong> $567K | <strong>Jun:</strong> $589K (+3.9%)</p>
-      <p><strong>June Performance:</strong> $589K total revenue, $472 revenue per patient</p>
-    </div>
+<div class="card">
+<h2>CAC vs LTV Trend</h2>
+<p><strong>January:</strong> LTV $305, CAC $145 (Ratio: 2.1:1)</p>
+<p><strong>February:</strong> LTV $312, CAC $152 (Ratio: 2.1:1)</p>
+<p><strong>March:</strong> LTV $318, CAC $138 (Ratio: 2.3:1)</p>
+<p><strong>April:</strong> LTV $322, CAC $141 (Ratio: 2.3:1)</p>
+<p><strong>May:</strong> LTV $323, CAC $133 (Ratio: 2.4:1)</p>
+<p><strong>June:</strong> LTV $325, CAC $128 (Ratio: 2.5:1)</p>
+<p style="background: #d1fae5; padding: 15px; border-radius: 8px; color: #065f46;"><strong>Current Ratio: 2.5:1</strong> - Good! Target is 3:1 minimum. Operations efficiency is driving down CAC while increasing LTV.</p>
+</div>
 
-    <div class="card">
-      <h2>CAC vs LTV Trend</h2>
-      <p><strong>Jan:</strong> LTV $305, CAC $145 (2.1:1) | <strong>Feb:</strong> LTV $312, CAC $152 (2.1:1)</p>
-      <p><strong>Mar:</strong> LTV $318, CAC $138 (2.3:1) | <strong>Apr:</strong> LTV $322, CAC $141 (2.3:1)</p>
-      <p><strong>May:</strong> LTV $323, CAC $133 (2.4:1) | <strong>Jun:</strong> LTV $325, CAC $128 (2.5:1)</p>
-      <p><strong>Current Ratio:</strong> 2.5:1 — Good. Target is 3:1 minimum.</p>
-    </div>
+<div class="card">
+<h2>Patient Churn Risk Analysis</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+<div style="background: #fffbeb; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+<h4 style="color: #d97706;">Medium Risk</h4>
+<h3>78 patients</h3>
+<p>30-45 days</p>
+</div>
+<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #ef4444;">
+<h4 style="color: #dc2626;">High Risk</h4>
+<h3>45 patients</h3>
+<p>46-60 days</p>
+</div>
+<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #dc2626;">
+<h4 style="color: #b91c1c;">Critical Risk</h4>
+<h3>32 patients</h3>
+<p>61-90 days</p>
+</div>
+<div style="background: #fef2f2; padding: 20px; border-radius: 8px; border-left: 4px solid #7f1d1d;">
+<h4 style="color: #7f1d1d;">Lost</h4>
+<h3>28 patients</h3>
+<p>90+ days</p>
+</div>
+</div>
+<p style="background: #fef3c7; padding: 15px; border-radius: 8px; color: #92400e;"><strong>Action Required:</strong> 183 patients at risk of churning. Implement automated follow-up sequences for patients at 30+ days since last visit. Potential revenue at risk: ~$520,000 in LTV.</p>
+</div>
 
-    <div class="card">
-      <h2>Patient Churn Risk Analysis</h2>
-      <p><strong>Medium Risk (30–45 days):</strong> 78 patients</p>
-      <p><strong>High Risk (46–60 days):</strong> 45 patients</p>
-      <p><strong>Critical Risk (61–90 days):</strong> 32 patients</p>
-      <p><strong>Lost (90+ days):</strong> 28 patients</p>
-      <p><strong>Action Required:</strong> 183 patients at risk of churning. Potential revenue at risk: $520,000 in LTV.</p>
-    </div>
+<div class="summary">
+<h2>Operational Efficiency ROI Summary</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 30px;">
+<div style="text-align: center;">
+<h1 style="font-size: 36px; margin-bottom: 10px;">$247K</h1>
+<p>Monthly revenue increase potential from reducing churn by 3.1%</p>
+</div>
+<div style="text-align: center;">
+<h1 style="font-size: 36px; margin-bottom: 10px;">2.5:1</h1>
+<p>LTV:CAC ratio showing strong customer acquisition efficiency</p>
+</div>
+<div style="text-align: center;">
+<h1 style="font-size: 36px; margin-bottom: 10px;">147 days</h1>
+<p>Average time between consults - automation opportunity</p>
+</div>
+</div>
+</div>
 
-    <div class="summary">
-      <h2>Operational Efficiency ROI Summary</h2>
-      <p><strong>$247K</strong> — Monthly revenue increase potential</p>
-      <p><strong>2.5:1</strong> — LTV:CAC ratio</p>
-      <p><strong>147 days</strong> — Average time between consults</p>
-    </div>
-
-  </div>
-
+</div>
 </body>
 </html>
