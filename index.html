@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { TrendingUp, TrendingDown, Users, DollarSign, Calendar, AlertTriangle, Target, Award } from 'lucide-react';
 
 const Dashboard = () => {
-  // Sample data - replace with your actual data source
   const [timeRange, setTimeRange] = useState('6months');
   
   // Patient Value & Retention Data
@@ -12,7 +11,7 @@ const Dashboard = () => {
     ltv_change: 12.5,
     churnRate: 18.2,
     churn_change: -3.1,
-    avgTimeBetweenConsults: 147, // Real weighted average from consultation data
+    avgTimeBetweenConsults: 147,
     time_change: -5.2,
     totalActivePatients: 1247
   };
@@ -37,7 +36,7 @@ const Dashboard = () => {
     { month: 'Jun', total: 589000, initial: 236000, followup: 353000, salesTeam: 442000, online: 147000 }
   ];
 
-  // Follow-up revenue by days since last appointment - REAL DATA from CSV with consultation counts
+  // Follow-up revenue by days since last appointment - REAL DATA
   const followUpRevenueByDays = [
     { dayRange: '0-7', revenue: 12740, consults: 140, revenuePerConsult: 91 },
     { dayRange: '7-14', revenue: 9100, consults: 100, revenuePerConsult: 91 },
